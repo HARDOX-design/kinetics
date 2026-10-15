@@ -11,6 +11,14 @@ node_modules/
 !.yarn/versions
 
 # ---------------------------------------------------------
+# PHP / Laravel leftovers (the Laravel app lives on the `laravel` branch)
+# ---------------------------------------------------------
+/vendor
+/storage
+/bootstrap/cache
+.phpunit.result.cache
+
+# ---------------------------------------------------------
 # Build output / generated
 # ---------------------------------------------------------
 dist/
