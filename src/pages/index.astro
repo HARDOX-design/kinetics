@@ -3,14 +3,12 @@ import body from "../content/body.html?raw";
 import SiteHead from "../components/SiteHead.astro";
 import { prepareLibrary } from "../lib/library.mjs";
 import { asset } from "../lib/assets.mjs";
-import { effects } from "../data/effects.mjs";
 const library = prepareLibrary(body);
 const description = `Explore ${library.total} animated UI examples with CSS snippets, ${library.counts.react} React examples, and ${library.counts.prompt} AI prompts. Preview, learn, and copy the code.`;
 const renderedBody = library.html
   .replaceAll("{{effectCount}}", String(library.total))
   .replaceAll("{{reactCount}}", String(library.counts.react))
-  .replaceAll("{{promptCount}}", String(library.counts.prompt))
-  .replace("<!-- featured-effect-links -->", effects.map((effect) => `<a href="/effects/${effect.slug}/">${effect.name}</a>`).join(''));
+  .replaceAll("{{promptCount}}", String(library.counts.prompt));
 ---
 <!doctype html>
 <html lang="en">
@@ -18,9 +16,9 @@ const renderedBody = library.html
   <body>
     <Fragment set:html={renderedBody} />
     <script is:inline defer src={asset("/js/search-index.js")}></script>
+    <script is:inline defer src={asset("/js/motion-visibility.js")}></script>
     <script is:inline defer src={asset("/js/main.js")}></script>
     <script is:inline defer src={asset("/js/physics-demo.js")}></script>
     <script>import '../scripts/examples.js';</script>
-    <style is:global set:html={effects.map((effect) => effect.css).join('\n')} />
   </body>
 </html>

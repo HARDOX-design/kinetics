@@ -9,7 +9,9 @@ const redirects = (request, response, next) => {
   const url = new URL(request.url, 'http://localhost');
   const rule = redirectRules.find(([from]) => from === url.pathname);
   if (!rule) return next();
-  response.writeHead(parseInt(rule[2], 10), { Location: rule[1] + url.search });
+  const destination = new URL(rule[1], url);
+  destination.search = url.search;
+  response.writeHead(parseInt(rule[2], 10), { Location: destination.pathname + destination.search + destination.hash });
   response.end();
 };
 export default defineConfig({

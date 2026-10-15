@@ -1,6 +1,8 @@
 # Sevalla reads this file from the repository root. Force the redirect even when index.html exists.
 /index.html / 301!
-/effects/index.html /effects/ 301!
+/effects/index.html /#library 301!
+/effects/ /#library 301!
+/effects /#library 301!
 /guides/css-spring-animation/index.html /guides/css-spring-animation/ 301!
 /effects/magnetic-button/index.html /effects/magnetic-button/ 301!
 /effects/accordion-spring/index.html /effects/accordion-spring/ 301!

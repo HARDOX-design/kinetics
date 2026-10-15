@@ -6,14 +6,14 @@ const { title, description, breadcrumbs, article = false } = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
-  <head><SiteHead title={`${title} | Kinetics`} description={description} breadcrumbs={breadcrumbs} article={article} /></head>
+  <head><SiteHead title={`${title} | Kinetics`} description={description} breadcrumbs={breadcrumbs} article={article} /><slot name="head" /></head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="article-header">
       <div class="wrap article-header-inner">
         <a class="brand" href="/" aria-label="Kinetics home"><span class="dot" aria-hidden="true"></span>Kinetics</a>
         <nav class="article-nav" aria-label="Main navigation">
-          <a href="/#library">Library</a><a href="/effects/">Examples</a><a href="/tools/spring-animation-generator/">Generator</a><a href="/guides/css-spring-animation/">Spring guide</a>
+          <a href="/#library">Library</a><a href="/tools/spring-animation-generator/">Generator</a><a href="/guides/css-spring-animation/">Spring guide</a>
         </nav>
       </div>
     </header>

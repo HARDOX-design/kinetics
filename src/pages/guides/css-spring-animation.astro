@@ -1,7 +1,8 @@
 ---
 import ContentLayout from '../../layouts/ContentLayout.astro';
 import SourceBlock from '../../components/SourceBlock.astro';
-import { effects } from '../../data/effects.mjs';
+import { catalog } from '../../data/catalog.mjs';
+const effects = catalog.filter((effect) => ['magnetic-button', 'accordion-spring', 'switch-spring', 'ripple-button', 'card-resize'].includes(effect.slug));
 import { easingHTML, easingCSS, simulatorHTML, simulatorCSS, simulatorJS } from '../../data/spring-example.mjs';
 import { updated, updatedLabel } from '../../data/site.mjs';
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'CSS spring animation', path: '/guides/css-spring-animation/' }];
@@ -47,7 +48,7 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'CSS spring animation', pat
     <section class="article-section" id="choose">
       <h2>Choose CSS easing or a live spring</h2>
       <h3>Use a CSS transition for a small, known state change</h3>
-      <p>Start with CSS for button feedback, a checkbox thumb, or a short reveal. You get a compact implementation with predictable timing. Prefer transform and opacity when they express the effect. Expanding an accordion changes layout, so use it thoughtfully for small panels.</p>
+      <p>Start with CSS for button feedback, a checkbox thumb, or a short reveal. You get a compact implementation with predictable timing. Prefer transform and opacity when they express the effect. Compare the pointer-driven <a href="/effects/magnetic-button/">magnetic button hover effect</a> with the CSS-only <a href="/effects/push-button/">3D push button</a>. The <a href="/effects/accordion-spring/">accordion height animation</a> changes layout, so use it thoughtfully for small panels.</p>
       <h3>Use a live spring for motion that changes while it runs</h3>
       <p>A dragged object, a frequently retargeted element, or a gesture that should carry momentum benefits from explicit position and velocity. Keep those values when the target changes. In a React component, retain simulation state in refs and cancel the animation frame during effect cleanup.</p>
       <h3>Use sampled CSS curves when you need a richer fixed path</h3>
@@ -56,11 +57,11 @@ const crumbs = [{ name: 'Home', path: '/' }, { name: 'CSS spring animation', pat
     <section class="article-section" id="accessibility">
       <h2>Keep the state change when motion is reduced</h2>
       <p>Respect <code>prefers-reduced-motion: reduce</code> in CSS and JavaScript. The CSS button removes its travel, and the simulator moves directly to its target. A visible focus indicator stays present in both cases. Never make an animation the only sign that a control worked.</p>
-      <p>Use native buttons, labeled inputs, and accurate expanded or checked states. For a closed disclosure panel, keep its interactive descendants out of the focus order. Test with a keyboard and a touch screen, then check the result with reduced motion enabled.</p>
+      <p>Use native buttons, labeled inputs, and accurate expanded or checked states. The <a href="/effects/floating-label/">floating label example</a> explains label relationships and filled states. The <a href="/effects/animated-tabs/">sliding pill navigation example</a> distinguishes visual selection from a complete tabs widget. For a closed disclosure panel, keep its interactive descendants out of the focus order. Test with a keyboard and a touch screen, then check the result with reduced motion enabled.</p>
       <h3>Keep the animation's work small</h3>
       <p>Do not run a new animation loop for every pointer event. Keep one loop active while movement needs it, stop at rest, and cancel it on teardown. The simulator measures its stage on resize rather than measuring layout on every frame. Avoid animating hundreds of offscreen previews at once.</p>
     </section>
-    <section class="article-section wide" id="examples"><h2>Copy a complete interface example</h2><div class="example-grid">{effects.map((effect) => <a class="example-link" href={`/effects/${effect.slug}/`}><span class="mono">{effect.method}</span><h3>{effect.name}</h3><p>{effect.summary}</p></a>)}</div><p><a href="/effects/">Compare all complete examples</a> or browse the <a href="/#library">full animation gallery</a>.</p></section>
+    <section class="article-section wide" id="examples"><h2>Explore interface motion examples</h2><div class="example-grid">{effects.map((effect) => <a class="example-link" href={`/effects/${effect.slug}/`}><span class="mono">{effect.method}</span><h3>{effect.name}</h3><p>{effect.summary}</p></a>)}</div><p>Browse every effect in the <a href="/#library">full animation gallery</a>.</p></section>
     <section class="article-section"><h2>References and browser behavior</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/cubic-bezier">MDN: cubic-bezier easing</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/linear">MDN: linear easing and sampled curves</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion">MDN: prefers-reduced-motion</a></li><li><a href="https://web.dev/articles/animations-guide">web.dev: animation performance</a></li></ul></section>
   </article>
   <style is:global set:html={[easingCSS, simulatorCSS].join('\n')} />

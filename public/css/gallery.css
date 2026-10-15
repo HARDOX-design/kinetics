@@ -8,6 +8,15 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
 }
+
+[data-motion-paused],
+[data-motion-paused]::before,
+[data-motion-paused]::after,
+[data-motion-paused] *,
+[data-motion-paused] *::before,
+[data-motion-paused] *::after {
+  animation-play-state: paused !important;
+}
 @media (max-width: 940px) {
   .gallery {
     grid-template-columns: repeat(2, 1fr);
@@ -366,11 +375,4 @@
 .card-foot .name a:hover { color: var(--amber); }
 .standalone-demo { width: 100%; display: grid; place-items: center; padding-top: 14px; }
 .standalone-demo .resize-card { padding: 18px; }
-.learn-band { padding: 0 0 32px; }
-.learn-intro { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding-top: 28px; border-top: 1px solid var(--line); }
-.learn-intro h2 { margin: 8px 0 12px; font-size: clamp(22px, 3vw, 32px); line-height: 1.2; }
-.learn-intro p { color: var(--bone-dim); max-width: 660px; }
-.learn-intro > a { flex-shrink: 0; }
-.featured-effect-links { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 24px; }
-.featured-effect-links a, .text-link { color: var(--bone); text-decoration: underline; text-decoration-color: var(--amber); text-underline-offset: 5px; }
-@media (max-width: 720px) { .learn-intro { align-items: flex-start; flex-direction: column; } }
+.text-link { color: var(--bone); text-decoration: underline; text-decoration-color: var(--amber); text-underline-offset: 5px; }

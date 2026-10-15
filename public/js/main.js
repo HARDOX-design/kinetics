@@ -528,15 +528,31 @@
     const pts = dots.map(() => ({ x: -20, y: -20 }));
     let target = { x: -20, y: -20 };
     let active = false;
+    let frame = null;
 
-    zone.addEventListener('pointerenter', () => { active = true; });
+    const stop = () => {
+      active = false;
+      cancelAnimationFrame(frame);
+      frame = null;
+      dots.forEach((dot) => { dot.style.opacity = '0'; });
+    };
+    zone.addEventListener('pointerenter', () => {
+      active = true;
+      if (frame === null) frame = requestAnimationFrame(tick);
+    });
     zone.addEventListener('pointermove', (e) => {
       const r = zone.getBoundingClientRect();
       target = { x: e.clientX - r.left, y: e.clientY - r.top };
     });
-    zone.addEventListener('pointerleave', () => { active = false; });
+    zone.addEventListener('pointerleave', stop);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => { if (!entries[0].isIntersecting) stop(); }).observe(zone);
+    }
 
     const tick = () => {
+      frame = null;
+      if (!active || document.hidden) return;
       let lead = target;
       pts.forEach((p, i) => {
         p.x += (lead.x - p.x) * 0.35;
@@ -545,9 +561,9 @@
         dots[i].style.opacity = active ? '' : '0';
         lead = p;
       });
-      requestAnimationFrame(tick);
+      frame = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    stop();
   });
 
   /* ---------------------------------------------------------
@@ -1153,8 +1169,8 @@
 
   /* Mobile header menu */
   const header = $('.site-header');
-  const menuToggle = $('.nav-toggle', header);
-  const mobileMenu = $('#mobile-nav', header);
+  const menuToggle = header ? $('.nav-toggle', header) : null;
+  const mobileMenu = header ? $('#mobile-nav', header) : null;
   let menuCloseTimer = null;
 
   const closeMobileMenu = () => {

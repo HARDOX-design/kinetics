@@ -1,14 +1,5 @@
 import { track } from '../lib/analytics.js';
 import { initSpringSimulator } from '../lib/spring-simulator.js';
-import { initMagneticButton, initDisclosure, initRippleButton } from '../lib/interactions.js';
-const initializers = {
-  'magnetic-button': initMagneticButton,
-  'accordion-spring': initDisclosure,
-  'card-resize': initDisclosure,
-  'ripple-button': initRippleButton,
-};
-document.querySelectorAll('[data-effect]').forEach((root) => initializers[root.dataset.effect]?.(root));
-
 document.querySelectorAll('[data-spring-simulator]').forEach(initSpringSimulator);
 
 document.querySelectorAll('[data-copy-code]').forEach((button) => {

@@ -1,0 +1,63 @@
+---
+import ContentLayout from '../layouts/ContentLayout.astro';
+import SourceBlock from './SourceBlock.astro';
+import { catalog } from '../data/catalog.mjs';
+import { asset } from '../lib/assets.mjs';
+import { effectAssets, runnableExample } from '../lib/effect-assets.mjs';
+import { effectTitle, relatedEffects } from '../lib/effect-discovery.mjs';
+import { effectGuides } from '../data/effect-guides.mjs';
+const { effect } = Astro.props;
+const assets = effectAssets(effect);
+const guide = effectGuides[effect.slug];
+const duplicate = catalog.filter((item) => item.name === effect.name).length > 1;
+const title = effectTitle(effect, Boolean(assets.js), duplicate);
+const description = `${effect.summary} Try the ${effect.name} live demo and explore its available code snippets on Kinetics.`;
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Library', path: '/#library' }, { name: effect.name, path: `/effects/${effect.slug}/` }];
+const suggestions = relatedEffects(effect, catalog);
+const labels = { html: 'HTML', css: 'CSS', js: 'JavaScript', react: 'React', prompt: 'AI prompt' };
+---
+<ContentLayout title={title} description={description} breadcrumbs={crumbs}>
+  <Fragment slot="head"><link rel="stylesheet" href={asset('/css/gallery.css')} /><style is:global set:html={assets.css} /></Fragment>
+  <article>
+    <header class="article-hero">
+      <div class="eyebrow">// {effect.category}</div>
+      <h1>{guide?.title || `${effect.name} animation`}</h1>
+      <p class="article-lead">{effect.summary}</p>
+    </header>
+    <nav class="on-this-page" aria-label="On this page"><a href="#demo">Live demo</a>{guide && <a href="#how-it-works">How it works</a>}<a href="#implementation">Code snippets</a>{guide && <a href="#troubleshooting">Troubleshooting</a>}<a href="#related">Related effects</a></nav>
+    <section id="demo" aria-label={`${effect.name} live demo`}>
+      <div class="card effect-preview">
+        <div class="card-stage"><Fragment set:html={effect.stage} /></div>
+        <div class="card-foot"><h2>{effect.name}</h2><p>{effect.summary}</p></div>
+      </div>
+      <p class="demo-caption">{effect.method} · The same preview as the full motion library.</p>
+    </section>
+    {guide && <>
+      <section class="article-section" id="how-it-works"><h2>How this {effect.name.toLowerCase()} works</h2><p>{guide.explanation}</p><h3>Run the original example</h3><ol>{guide.steps.map((step) => <li>{step}</li>)}</ol></section>
+      <section class="article-section wide"><h2>Complete standalone HTML</h2><p>Copy this document into an HTML file and open it directly in a browser. It includes the original demo, its styles, and any required JavaScript. No package installation or animation library is required. The original snippets remain below.</p><SourceBlock label="Standalone HTML" code={runnableExample(effect)} effect={effect.slug} language="html" /></section>
+      <section class="article-section"><h2>Adjust the effect</h2>{guide.tuning.map((item) => <><h3>{item.name}</h3><p>{item.text}</p></>)}</section>
+      <section class="article-section" id="troubleshooting"><h2>Troubleshooting</h2><p>{guide.troubleshooting}</p><h3>Keyboard and reduced motion</h3><p>{guide.accessibility}</p></section>
+    </>}
+    <section class="article-section wide" id="implementation">
+      <h2>{effect.name} code snippets</h2>
+      <p>Explore the original snippets below. The live preview uses the library’s shared styles and demo script. Some snippets illustrate the technique and need your own markup, imports, or application logic.</p>
+      <p class="source-note">The preview uses the <a href={asset('/css/base.css')}>base styles</a>, <a href={asset('/css/gallery.css')}>preview layout</a>, and the original effect code shown below.</p>
+      <SourceBlock label="Preview HTML" code={`<div class="card-stage">${effect.stage}</div>`} effect={effect.slug} language="html" />
+      <SourceBlock label="Original demo CSS" code={assets.css} effect={effect.slug} language="css" />
+      {assets.js && <SourceBlock label="Original demo JavaScript" code={assets.js} effect={effect.slug} language="js" />}
+      {effect.snippets.map((snippet) => <SourceBlock label={labels[snippet.language] || snippet.language} code={snippet.code} effect={effect.slug} language={snippet.language} />)}
+    </section>
+    <section class="article-section"><h2>Use this effect in your interface</h2><p>Test the preview with the input methods your interface supports. Keep a visible focus state for controls, offer a button alternative to gestures, and respect reduced-motion preferences in your implementation.</p><p>Browse the <a href="/#library">motion library</a> for more original motion examples. Learn about easing and live physics in the <a href="/guides/css-spring-animation/">spring animation guide</a>, or make an easing curve with the <a href="/tools/spring-animation-generator/">spring animation generator</a>.</p></section>
+    <section class="article-section wide" id="related"><h2>Related motion effects</h2><div class="example-grid">{suggestions.map((item) => <a class="example-link" href={`/effects/${item.slug}/`}><span class="mono">{item.method}</span><h3>{item.name}</h3><p>{item.summary}</p></a>)}</div><p><a href="/#library">Browse every motion effect</a> or <a href={`/#${effect.slug}`}>return to this card in the gallery</a>.</p></section>
+  </article>
+  {assets.js && <script is:inline set:html={assets.js} />}
+  <style>
+    .effect-preview { max-width: 660px; margin: 28px 0 16px; }
+    .effect-preview:hover { transform: none; box-shadow: none; }
+    .effect-preview .card-stage { min-height: 310px; }
+    .effect-preview .card-foot { padding: 24px; }
+    .effect-preview h2 { font: 700 24px/1.3 var(--font-display); margin-bottom: 10px; }
+    .effect-preview .card-foot p { color: var(--bone-dim); line-height: 1.7; }
+    @media (max-width: 600px) { .effect-preview .card-stage { padding: 38px 16px 24px; } }
+  </style>
+</ContentLayout>

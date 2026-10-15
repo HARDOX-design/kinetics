@@ -18,6 +18,8 @@
 
     const W = 1200, H = 84, MID = 42, STEP = 12;
     let t = 0;
+    let frame = null;
+    let visible = true;
 
     const build = (phase, amp, freq) => {
       let pts = '';
@@ -30,17 +32,29 @@
     };
 
     const render = () => {
+      frame = null;
+      if (document.hidden || !visible || reduce) return;
       t += 0.045;
       wave.setAttribute('points', build(t, 18, 0.012));
       if (wave2) wave2.setAttribute('points', build(t * 0.7 + 1.5, 11, 0.018));
-      if (!reduce) requestAnimationFrame(render);
+      frame = requestAnimationFrame(render);
     };
+    const sync = () => {
+      if (document.hidden || !visible) {
+        cancelAnimationFrame(frame);
+        frame = null;
+      } else if (!reduce && frame === null) frame = requestAnimationFrame(render);
+    };
+    document.addEventListener('visibilitychange', sync);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => { visible = entries[0].isIntersecting; sync(); }).observe(wave.closest('svg'));
+    }
 
     if (reduce) {
       wave.setAttribute('points', build(0, 18, 0.012));
       if (wave2) wave2.setAttribute('points', build(1.5, 11, 0.018));
     } else {
-      requestAnimationFrame(render);
+      sync();
     }
   })();
 

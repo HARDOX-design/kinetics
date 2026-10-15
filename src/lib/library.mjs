@@ -1,5 +1,5 @@
 import { parseFragment, serialize } from 'parse5';
-import { effects, codeExamples } from '../data/effects.mjs';
+import { effectSlugs } from '../data/effects.mjs';
 
 const hasClass = (node, name) => node.attrs?.some((a) => a.name === 'class' && a.value.split(/\s+/).includes(name));
 const find = (node, predicate) => {
@@ -9,7 +9,7 @@ const find = (node, predicate) => {
     if (result) return result;
   }
 };
-const text = (node) => node.nodeName === '#text' ? node.value : (node.childNodes || []).map(text).join('');
+const text = (node) => !node ? '' : node.nodeName === '#text' ? node.value : (node.childNodes || []).map(text).join('');
 const attribute = (node, key) => node.attrs?.find((a) => a.name === key)?.value;
 function setAttribute(node, key, value) {
   const existing = node.attrs.find((a) => a.name === key);
@@ -32,26 +32,17 @@ export function prepareLibrary(source) {
   };
   visit(document);
   const counts = { css: 0, react: 0, prompt: 0 };
+  const catalog = [];
   const usedIDs = new Map();
   for (const card of cards) {
     const nameNode = find(card, (n) => hasClass(n, 'name'));
     const name = text(nameNode).trim();
-    const featured = effects.find((effect) => effect.name === name);
-    const baseID = featured?.slug || name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const baseID = effectSlugs[name] || name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     const occurrence = (usedIDs.get(baseID) || 0) + 1;
     usedIDs.set(baseID, occurrence);
     setAttribute(card, 'id', occurrence === 1 ? baseID : `${baseID}-${occurrence}`);
     nameNode.tagName = nameNode.nodeName = 'h3';
-    if (featured) {
-      setHTML(nameNode, `<a href="/effects/${featured.slug}/">${escapeHTML(name)}</a>`);
-      const stage = find(card, (n) => hasClass(n, 'card-stage'));
-      setHTML(stage, `<div class="card-param mono">${escapeHTML(featured.method)}</div><div class="standalone-demo" data-effect="${featured.slug}">${featured.html}</div>`);
-      const panel = find(card, (n) => hasClass(n, 'code-panel'));
-      const examples = codeExamples(featured);
-      // Keep CSS first in the gallery's existing modal.
-      examples.sort((a, b) => (a.language === 'css' ? -1 : b.language === 'css' ? 1 : 0));
-      setHTML(panel, `<div class="code-tabs">${examples.map((example, i) => `<button class="code-tab${i === 0 ? ' active' : ''}" data-lang="${example.language}">${example.label}</button>`).join('')}</div><div class="code-body"><button class="copy-btn">Copy</button>${examples.map((example, i) => `<pre data-lang="${example.language}"${i ? ' class="hidden"' : ''}><code>${escapeHTML(example.code)}</code></pre>`).join('')}</div>`);
-    }
+    setHTML(nameNode, `<a href="/effects/${attribute(card, 'id')}/">${escapeHTML(name)}</a>`);
     const languages = new Set();
     const collect = (node) => {
       if (node.tagName === 'pre') languages.add(attribute(node, 'data-lang'));
@@ -63,6 +54,22 @@ export function prepareLibrary(source) {
     const holder = nameNode.parentNode;
     badges.parentNode = holder;
     holder.childNodes.splice(holder.childNodes.indexOf(nameNode) + 1, 0, badges);
+    let section = card.parentNode;
+    while (section && !hasClass(section, 'section')) section = section.parentNode;
+    const snippets = [];
+    const readSnippets = (node) => {
+      if (node.tagName === 'pre') snippets.push({ language: attribute(node, 'data-lang'), code: text(node) });
+      for (const child of node.childNodes || []) readSnippets(child);
+    };
+    readSnippets(card);
+    catalog.push({
+      slug: attribute(card, 'id'), name,
+      summary: text(find(card, (node) => hasClass(node, 'desc'))).trim().replace(/\s+/g, ' '),
+      category: text(find(section, (node) => node.tagName === 'h2')).trim(),
+      method: text(find(card, (node) => hasClass(node, 'card-param'))).trim(),
+      stage: serialize(find(card, (node) => hasClass(node, 'card-stage'))),
+      snippets,
+    });
   }
-  return { html: serialize(document), total: cards.length, counts };
+  return { html: serialize(document), total: cards.length, counts, catalog };
 }
