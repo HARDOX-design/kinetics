@@ -8,14 +8,5 @@
 /effects/ripple-button/index.html /effects/ripple-button/ 301!
 /effects/card-resize/index.html /effects/card-resize/ 301!
 
-# Keep inbound links consistent with the trailing-slash canonicals.
-/effects /effects/ 301!
-/guides/css-spring-animation /guides/css-spring-animation/ 301!
-/effects/magnetic-button /effects/magnetic-button/ 301!
-/effects/accordion-spring /effects/accordion-spring/ 301!
-/effects/switch-spring /effects/switch-spring/ 301!
-/effects/ripple-button /effects/ripple-button/ 301!
-/effects/card-resize /effects/card-resize/ 301!
 
 /tools/spring-animation-generator/index.html /tools/spring-animation-generator/ 301!
-/tools/spring-animation-generator /tools/spring-animation-generator/ 301!

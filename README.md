@@ -43,3 +43,5 @@ Archivo, Inter, and JetBrains Mono load from Google Fonts.
 The existing Plausible tracker receives `Copy Code` (effect, language, source), `Guide Example Click` (effect), and `Share Spring` (source). Copy events fire only after a successful clipboard action. Create matching custom event goals in the Plausible site settings to display conversions. No code contents or clipboard contents are sent.
 
 Compare Google Search Console clicks and impressions over equal 28-day periods after launch. Review non-brand queries, the guide, the generator, and each effect page separately. Indexing and ranking changes can take longer than a reporting period.
+
+Only explicit `index.html` paths use forced redirects. Sevalla normalizes trailing slashes when matching redirect rules, so a forced slashless-to-slash rule would loop. Clean slash and slashless paths share the same canonical URL.
