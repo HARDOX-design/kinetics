@@ -1,0 +1,44 @@
+---
+import ContentLayout from '../../layouts/ContentLayout.astro';
+import SourceBlock from '../../components/SourceBlock.astro';
+import { springCurve, springCode } from '../../lib/spring-curve.js';
+const curve = springCurve();
+const code = springCode(curve);
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Spring animation generator', path: '/tools/spring-animation-generator/' }];
+---
+<ContentLayout title="CSS Spring Animation Generator" description="Generate a CSS spring easing curve with stiffness, damping, and mass controls. Preview presets, copy CSS or React code, and share your settings." breadcrumbs={crumbs}>
+  <article>
+    <header class="article-hero"><div class="eyebrow">// Free animation tool</div><h1>CSS spring animation generator</h1><p class="article-lead">Tune a spring, preview its motion, and copy the result into CSS or React. No animation library required.</p></header>
+    <section data-spring-generator class="generator" aria-label="Spring controls and generated code">
+      <noscript><p class="article-note">Enable JavaScript to change settings and preview motion. The default code below works without this tool.</p></noscript>
+      <fieldset class="generator-presets"><legend>Start with a preset</legend><button type="button" data-preset="snappy">Snappy</button><button type="button" data-preset="soft">Soft</button><button type="button" data-preset="bouncy">Bouncy</button></fieldset>
+      <div class="generator-controls">
+        <label>Stiffness <output data-output="stiffness">400</output><input type="range" data-param="stiffness" min="80" max="500" step="1" value="400" /></label>
+        <label>Damping <output data-output="damping">32</output><input type="range" data-param="damping" min="8" max="50" step="1" value="32" /></label>
+        <label>Mass <output data-output="mass">1</output><input type="range" data-param="mass" min="0.5" max="2" step="0.05" value="1" /></label>
+      </div>
+      <div class="generator-track" data-track><span data-ball aria-hidden="true"></span></div>
+      <div class="generator-actions"><button type="button" data-preview>Replay spring</button><button type="button" data-share>Copy settings link</button><span data-generator-status role="status" aria-live="polite">Duration: {curve.duration} ms</span></div>
+      <p class="source-note">The preview and exported CSS use the same sampled curve. Reduced motion skips the animation.</p>
+      {Object.entries(code).map(([language, value]) => <div data-generated={language}><SourceBlock label={language === 'react' ? 'React' : language.toUpperCase()} code={value} effect="spring-generator" language={language} /></div>)}
+    </section>
+    <section class="article-section"><h2>How to tune a spring</h2><p>Stiffness controls the restoring force. Higher values return faster. Damping removes energy, which reduces overshoot. Mass controls how strongly the same force changes velocity. Try Bouncy for visible overshoot, or Soft for a slower return.</p><h2>What this tool exports</h2><p>The tool samples a damped spring from rest and converts it to a CSS <code>linear()</code> easing function. The duration includes a quiet settling period. Browsers without <code>linear()</code> use the <code>ease-out</code> fallback. An interrupted CSS transition does not preserve the velocity of a live physics simulation.</p><p>Read the <a href="/guides/css-spring-animation/">CSS spring animation guide</a> for the physics and an interactive simulation. Use the <a href="/effects/magnetic-button/">magnetic button</a> or <a href="/effects/switch-spring/">spring switch</a> for complete UI examples.</p></section>
+  </article>
+  <script>import '../../scripts/spring-generator.js';</script>
+</ContentLayout>
+<style>
+.generator { margin-top: 36px; }
+.generator-presets { border: 0; padding: 0; display: flex; gap: 12px; flex-wrap: wrap; }
+.generator-presets legend { margin-bottom: 14px; color: var(--bone-dim); }
+.generator button { border: 1px solid var(--line); border-radius: 8px; padding: 12px 18px; min-height: 44px; background: var(--card); }
+.generator button:hover, .generator button[aria-pressed=true] { border-color: var(--amber); color: var(--amber); }
+.generator-controls { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; margin: 28px 0; }
+.generator-controls label { display: block; }
+.generator-controls output { float: right; color: var(--amber); }
+.generator-controls input { display: block; width: 100%; margin-top: 20px; accent-color: var(--amber); }
+.generator-track { height: 140px; display: flex; align-items: center; margin: 24px 0; padding: 0 50px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); overflow: hidden; }
+.generator-track span { display: block; width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%; background: var(--amber); }
+.generator-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.generator-actions span { color: var(--bone-dim); font: 12px var(--font-mono); }
+@media(max-width:600px) { .generator-controls { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,67 @@
+---
+import ContentLayout from '../../layouts/ContentLayout.astro';
+import SourceBlock from '../../components/SourceBlock.astro';
+import { effects } from '../../data/effects.mjs';
+import { easingHTML, easingCSS, simulatorHTML, simulatorCSS, simulatorJS } from '../../data/spring-example.mjs';
+import { updated, updatedLabel } from '../../data/site.mjs';
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'CSS spring animation', path: '/guides/css-spring-animation/' }];
+---
+<ContentLayout title="CSS Spring Animation: Easing, Physics & Working Examples" description="Learn CSS spring animation with a copyable button example and an interactive physics simulator. Understand stiffness, damping, interruption, and reduced motion." breadcrumbs={crumbs} article>
+  <article>
+    <header class="article-hero">
+      <div class="eyebrow">// a practical guide to spring motion</div>
+      <h1>CSS spring animation,<br />with the physics explained.</h1>
+      <p class="article-lead">Use a small CSS transition when you want spring-like feedback. Use a live spring when movement needs to carry velocity through a changing target. Try both, then copy the implementation that fits.</p>
+      <p class="article-meta">By <a href="https://x.com/csaba_kissi">Csaba Kissi</a> · Updated <time datetime={updated}>{updatedLabel}</time></p>
+    </header>
+    <nav class="on-this-page" aria-label="On this page"><a href="#css-easing">CSS example</a><a href="#spring-physics">Spring physics</a><a href="#simulator">Try the simulator</a><a href="#choose">Choose an approach</a><a href="#accessibility">Reduced motion</a><a href="#examples">Complete examples</a></nav>
+    <p class="article-note">Create your own curve with the <a href="/tools/spring-animation-generator/">CSS spring animation generator</a>. Choose a preset, tune the spring, and copy CSS or React code.</p>
+    <section class="article-section" id="css-easing">
+      <h2>Make a spring-like animation with CSS</h2>
+      <p>A transition maps a fixed duration through an easing curve. With <code>cubic-bezier(.34, 1.56, .64, 1)</code>, the curve briefly travels above its final value. A translated or scaled element overshoots, then settles. That is enough for many buttons, switches, and hover effects.</p>
+      <div class="demo-frame"><Fragment set:html={easingHTML} /></div>
+      <p>Hover the button or focus it with Tab. Pressing it gives a small inward movement. The state change stays usable when reduced motion is enabled.</p>
+      <SourceBlock label="HTML" code={easingHTML} /><SourceBlock label="CSS" code={easingCSS} />
+      <p>Copy both blocks. Change the 400ms duration to adjust timing, or reduce the second control point's height for less overshoot. This example needs no animation library and no JavaScript.</p>
+      <p>A CSS easing curve is a useful approximation. It does not store the velocity of a moving object. If the target changes halfway through, the browser applies its transition rules rather than continuing a mass-and-spring simulation.</p>
+    </section>
+    <section class="article-section" id="spring-physics">
+      <h2>What stiffness, damping, and mass change</h2>
+      <p>A live spring computes acceleration from the distance to a target and the current velocity. In a simple one-dimensional model:</p>
+      <SourceBlock label="Spring equation" code={'acceleration = (stiffness * (target - position) - damping * velocity) / mass\nvelocity += acceleration * dt\nposition += velocity * dt'} />
+      <ul>
+        <li><strong>Stiffness</strong> controls how strongly the spring pulls toward its target. A higher value generally makes the motion respond faster.</li>
+        <li><strong>Damping</strong> resists motion. Lower values allow more oscillation. Higher values reduce bounce and can make the final approach slower.</li>
+        <li><strong>Mass</strong> controls how much acceleration a given force produces. The simulator below fixes mass at 1 so you can compare the other two parameters.</li>
+      </ul>
+      <p>Critical damping in this model occurs at <code>2 × sqrt(stiffness × mass)</code>. At stiffness 320 and mass 1, that is about 35.8. Damping 24 is underdamped, so some overshoot is expected. The units and parameter scales differ between libraries; do not assume the same numbers will look identical everywhere.</p>
+    </section>
+    <section class="article-section wide" id="simulator">
+      <h2>Try a spring that can change direction</h2>
+      <p>Choose Move right, then Move left before the ball settles. The simulation changes its target without resetting position or velocity. Adjust stiffness and damping while it moves to compare the response.</p>
+      <div class="guide-simulator"><Fragment set:html={simulatorHTML} /></div>
+      <p class="article-note">This is a JavaScript physics simulation. The button example above uses CSS easing. They can look similar during one movement, but they handle interruptions differently.</p>
+      <details class="simulator-source"><summary>Copy the complete simulator</summary><SourceBlock label="Simulator HTML" code={simulatorHTML} /><SourceBlock label="Simulator CSS" code={simulatorCSS} /><SourceBlock label="Simulator JavaScript" code={simulatorJS} /></details>
+      <p class="source-note">Use all three blocks and load the script after the markup. The implementation limits time catch-up after a background tab and uses small integration steps for stability. Its rest threshold stops the animation loop once movement settles.</p>
+    </section>
+    <section class="article-section" id="choose">
+      <h2>Choose CSS easing or a live spring</h2>
+      <h3>Use a CSS transition for a small, known state change</h3>
+      <p>Start with CSS for button feedback, a checkbox thumb, or a short reveal. You get a compact implementation with predictable timing. Prefer transform and opacity when they express the effect. Expanding an accordion changes layout, so use it thoughtfully for small panels.</p>
+      <h3>Use a live spring for motion that changes while it runs</h3>
+      <p>A dragged object, a frequently retargeted element, or a gesture that should carry momentum benefits from explicit position and velocity. Keep those values when the target changes. In a React component, retain simulation state in refs and cancel the animation frame during effect cleanup.</p>
+      <h3>Use sampled CSS curves when you need a richer fixed path</h3>
+      <p>The CSS <code>linear()</code> easing function can describe many samples from a precomputed spring curve. That can reproduce a richer spring-shaped path with no per-frame JavaScript. It is still a sampled curve played over a duration, not a live simulation that preserves velocity across arbitrary target changes. Check browser support and supply a fallback when you use it.</p>
+    </section>
+    <section class="article-section" id="accessibility">
+      <h2>Keep the state change when motion is reduced</h2>
+      <p>Respect <code>prefers-reduced-motion: reduce</code> in CSS and JavaScript. The CSS button removes its travel, and the simulator moves directly to its target. A visible focus indicator stays present in both cases. Never make an animation the only sign that a control worked.</p>
+      <p>Use native buttons, labeled inputs, and accurate expanded or checked states. For a closed disclosure panel, keep its interactive descendants out of the focus order. Test with a keyboard and a touch screen, then check the result with reduced motion enabled.</p>
+      <h3>Keep the animation's work small</h3>
+      <p>Do not run a new animation loop for every pointer event. Keep one loop active while movement needs it, stop at rest, and cancel it on teardown. The simulator measures its stage on resize rather than measuring layout on every frame. Avoid animating hundreds of offscreen previews at once.</p>
+    </section>
+    <section class="article-section wide" id="examples"><h2>Copy a complete interface example</h2><div class="example-grid">{effects.map((effect) => <a class="example-link" href={`/effects/${effect.slug}/`}><span class="mono">{effect.method}</span><h3>{effect.name}</h3><p>{effect.summary}</p></a>)}</div><p><a href="/effects/">Compare all complete examples</a> or browse the <a href="/#library">full animation gallery</a>.</p></section>
+    <section class="article-section"><h2>References and browser behavior</h2><ul><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/cubic-bezier">MDN: cubic-bezier easing</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function/linear">MDN: linear easing and sampled curves</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion">MDN: prefers-reduced-motion</a></li><li><a href="https://web.dev/articles/animations-guide">web.dev: animation performance</a></li></ul></section>
+  </article>
+  <style is:global set:html={[easingCSS, simulatorCSS].join('\n')} />
+</ContentLayout>

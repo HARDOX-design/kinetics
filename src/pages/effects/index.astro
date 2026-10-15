@@ -1,0 +1,10 @@
+---
+import ContentLayout from '../../layouts/ContentLayout.astro';
+import { effects } from '../../data/effects.mjs';
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Examples', path: '/effects/' }];
+---
+<ContentLayout title="CSS & React Animation Examples with Complete Code" description="Copy complete button, toggle switch, accordion, and expandable card animations. Each example includes a live demo, setup instructions, and accessibility notes." breadcrumbs={crumbs}>
+  <header class="article-hero"><div class="eyebrow">// five patterns, explained</div><h1>Interface animations.<br />The complete code.</h1><p class="article-lead">Start with a working example. Each page includes its markup, CSS, any required JavaScript, and a self-contained React component.</p></header>
+  <div class="example-grid">{effects.map((effect) => <a class="example-link" href={`/effects/${effect.slug}/`}><span class="mono">{effect.method}</span><h2>{effect.name}</h2><p>{effect.summary}</p></a>)}</div>
+  <section class="article-section"><h2>Choose the right kind of motion</h2><p>Use the switch for a native form control with CSS-only feedback. Use the accordion or expandable card to reveal content. The magnetic button needs pointer coordinates, while the ripple uses click coordinates. These examples use transitions and keyframes; their spring-like easing does not make them live physics simulations.</p><p>For stiffness, damping, and velocity, start with the <a href="/guides/css-spring-animation/">spring animation guide and simulator</a>. For more visual inspiration, browse the <a href="/#library">full animation library</a>, where snippet labels show which implementations are available.</p></section>
+</ContentLayout>

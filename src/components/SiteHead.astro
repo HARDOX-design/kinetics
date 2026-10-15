@@ -1,0 +1,117 @@
+---
+import { asset } from '../lib/assets.mjs';
+import { site } from '../data/site.mjs';
+interface Props { title: string; description: string; home?: boolean; breadcrumbs?: { name: string; path: string }[]; article?: boolean; }
+const { title, description, home = false, breadcrumbs = [], article = false } = Astro.props;
+const path = Astro.url.pathname.replace(/index\.html$/, '');
+const canonical = new URL(path, site).href;
+const author = { '@type': 'Person', name: 'Csaba Kissi', url: 'https://x.com/csaba_kissi' };
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': home ? 'WebSite' : article ? 'TechArticle' : 'WebPage', name: home ? 'Kinetics' : title, ...(article ? { headline: title } : {}), description, url: canonical, image: `${site}/og-image.png`, author },
+    ...(breadcrumbs.length ? [{ '@type': 'BreadcrumbList', itemListElement: breadcrumbs.map((crumb, index) => ({ '@type': 'ListItem', position: index + 1, name: crumb.name, item: new URL(crumb.path, site).href })) }] : []),
+  ],
+};
+---
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="index,follow" />
+    <title>{title}</title>
+    <link rel="canonical" href={canonical} />
+    <meta
+      name="description"
+      content={description}
+    />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0E0E10" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kinetics" />
+    <meta
+      property="og:title"
+      content={title}
+    />
+    <meta
+      property="og:description"
+      content={description}
+    />
+    <meta property="og:url" content={canonical} />
+    <meta
+      property="og:image"
+      content="https://kinetics.colorion.co/og-image.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Kinetics — Motion that has weight."
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content={title}
+    />
+    <meta
+      name="twitter:description"
+      content={description}
+    />
+    <meta
+      name="twitter:image"
+      content="https://kinetics.colorion.co/og-image.png"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Archivo:wght@100..900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <!-- Critical CSS (render-blocking) -->
+    <link rel="stylesheet" href={asset("/css/base.css")} />
+    {home && <link rel="stylesheet" href={asset("/css/hero.css")} />}
+
+    {home && ["gallery", "effects-a", "effects-b", "effects-c", "closing"].map((name) => (
+      <Fragment>
+        <link rel="preload" href={asset(`/css/${name}.css`)} as="style" onload="this.onload=null;this.rel='stylesheet'" />
+        <noscript><link rel="stylesheet" href={asset(`/css/${name}.css`)} /></noscript>
+      </Fragment>
+    ))}
+
+    <!-- Privacy-friendly analytics by Plausible -->
+    <script
+      async
+      src="https://plausible.elerion.com/js/pa-zuKnhHiNDX22VTU4lS3jw.js"
+    ></script>
+    <script>
+      ((window.plausible =
+        window.plausible ||
+        function () {
+          (plausible.q = plausible.q || []).push(arguments);
+        }),
+        (plausible.init =
+          plausible.init ||
+          function (i) {
+            plausible.o = i || {};
+          }));
+      plausible.init();
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, "\\u003c")} />
+

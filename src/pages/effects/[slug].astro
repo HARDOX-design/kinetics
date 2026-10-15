@@ -1,0 +1,39 @@
+---
+import ContentLayout from '../../layouts/ContentLayout.astro';
+import SourceBlock from '../../components/SourceBlock.astro';
+import { effects, codeExamples } from '../../data/effects.mjs';
+import { updated, updatedLabel } from '../../data/site.mjs';
+export function getStaticPaths() {
+  return effects.map((effect) => ({ params: { slug: effect.slug }, props: { effect } }));
+}
+const { effect } = Astro.props;
+const related = effects.filter((item) => item.slug !== effect.slug).sort((a, b) => Number(b.category === effect.category) - Number(a.category === effect.category)).slice(0, 3);
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'Examples', path: '/effects/' }, { name: effect.name, path: `/effects/${effect.slug}/` }];
+---
+<ContentLayout title={effect.title} description={effect.description} breadcrumbs={crumbs}>
+  <article>
+    <header class="article-hero">
+      <div class="eyebrow">// {effect.category} · complete example</div>
+      <h1>{effect.title}</h1>
+      <p class="article-lead">{effect.summary}</p>
+      <p class="article-meta">By <a href="https://x.com/csaba_kissi">Csaba Kissi</a> · Updated <time datetime={updated}>{updatedLabel}</time></p>
+    </header>
+    <nav class="on-this-page" aria-label="On this page"><a href="#demo">Live demo</a><a href="#implementation">Get the code</a><a href="#tuning">Tune it</a><a href="#accessibility">Accessibility</a><a href="#related">Related examples</a></nav>
+    <section id="demo" aria-label={`${effect.name} live demo`}>
+      <div class="demo-frame"><div data-effect={effect.slug}><Fragment set:html={effect.html} /></div></div>
+      <p class="demo-caption">{effect.method} · {effect.init ? 'Vanilla JavaScript required for interaction' : 'Works without JavaScript'}</p>
+    </section>
+    <section class="article-section" aria-labelledby="how-it-works"><h2 id="how-it-works">How it works</h2><p>{effect.explanation}</p></section>
+    <section class="article-section wide" id="implementation">
+      <h2>Copy a complete implementation</h2>
+      <p class="source-note">Use the HTML, CSS{effect.init ? ', and JavaScript' : ''} together for a standalone page, or use the self-contained React component. No animation library is required.</p>
+      <ol>{effect.steps.map((step) => <li>{step}</li>)}</ol>
+      {codeExamples(effect).map((example) => <SourceBlock label={example.label} code={example.code} effect={effect.slug} language={example.language} />)}
+    </section>
+    <section class="article-section" id="tuning"><h2>Adjust the effect</h2>{effect.tuning.map((item) => <Fragment><h3>{item.name}</h3><p>{item.text}</p></Fragment>)}</section>
+    <section class="article-section" id="accessibility"><h2>Keyboard and reduced motion</h2><p>{effect.accessibility}</p></section>
+    <section class="article-section"><h2>Before using this in your app</h2><p>{effect.limitation}</p><p>For the distinction between an easing curve and a live spring, read the <a href="/guides/css-spring-animation/">CSS spring animation guide</a>.</p></section>
+    <section class="article-section wide" id="related"><h2>More animation examples</h2><div class="example-grid">{related.map((item) => <a class="example-link" href={`/effects/${item.slug}/`}><span class="mono">{item.category}</span><h3>{item.name}</h3><p>{item.summary}</p></a>)}</div><p><a href="/effects/">Browse all complete examples</a> or <a href={`/#${effect.slug}`}>find this effect in the full gallery</a>.</p></section>
+  </article>
+  <style is:global set:html={effect.css} />
+</ContentLayout>

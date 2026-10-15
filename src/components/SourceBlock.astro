@@ -1,0 +1,11 @@
+---
+interface Props { label: string; code: string; effect?: string; language?: string; }
+const { label, code, effect = "spring-guide", language = label.toLowerCase() } = Astro.props;
+---
+<div class="source-block" data-source-effect={effect} data-source-language={language}>
+  <div class="source-head">
+    <h3>{label}</h3>
+    <div class="source-actions"><span role="status" aria-live="polite"></span><button type="button" data-copy-code hidden aria-label={`Copy ${label} code`}>Copy code</button></div>
+  </div>
+  <pre tabindex="0" aria-label={`${label} code`}><code>{code}</code></pre>
+</div>

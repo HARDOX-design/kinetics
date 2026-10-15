@@ -1,0 +1,33 @@
+---
+import SiteHead from '../components/SiteHead.astro';
+import '../styles/content.css';
+interface Props { title: string; description: string; breadcrumbs: { name: string; path: string }[]; article?: boolean; }
+const { title, description, breadcrumbs, article = false } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head><SiteHead title={`${title} | Kinetics`} description={description} breadcrumbs={breadcrumbs} article={article} /></head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="article-header">
+      <div class="wrap article-header-inner">
+        <a class="brand" href="/" aria-label="Kinetics home"><span class="dot" aria-hidden="true"></span>Kinetics</a>
+        <nav class="article-nav" aria-label="Main navigation">
+          <a href="/#library">Library</a><a href="/effects/">Examples</a><a href="/tools/spring-animation-generator/">Generator</a><a href="/guides/css-spring-animation/">Spring guide</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main" class="wrap content-wrap">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol>{breadcrumbs.map((crumb, index) => <li>{index < breadcrumbs.length - 1 ? <a href={crumb.path}>{crumb.name}</a> : <span aria-current="page">{crumb.name}</span>}</li>)}</ol>
+      </nav>
+      <slot />
+    </main>
+    <footer class="article-footer wrap">
+      <a href="/">Kinetics</a>
+      <span>Built by <a href="https://x.com/csaba_kissi">Csaba Kissi</a></span>
+      <a href="https://github.com/ckissi/kinetics" target="_blank" rel="noopener">Source on GitHub</a>
+    </footer>
+    <script>import '../scripts/examples.js';</script>
+  </body>
+</html>

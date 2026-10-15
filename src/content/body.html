@@ -1,6 +1,7 @@
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <div class="wrap">
-    <div class="brand"><span class="dot"></span> Kinetics</div>
+    <a class="brand" href="/" aria-label="Kinetics home"><span class="dot" aria-hidden="true"></span> Kinetics</a>
     <button
       class="nav-toggle"
       type="button"
@@ -15,6 +16,7 @@
     <nav class="nav-links">
       <a href="#library">Library</a>
       <a href="#physics">Physics</a>
+      <a href="/guides/css-spring-animation/">Spring guide</a>
       <a href="#about">About</a>
       <div class="nav-dropdown">
         <button
@@ -247,20 +249,20 @@
 
       <div class="hero-grid">
         <div>
-          <div class="eyebrow">// 162 spring-driven interactions</div>
+          <div class="eyebrow">// {{effectCount}} interface animations</div>
           <h1 class="h-display">
-            Motion that<br />has <span class="accent">weight.</span>
+            Spring animation examples<br />for <span class="accent">CSS and React.</span>
           </h1>
+          <p class="hero-tagline">Motion that has weight.</p>
           <p class="hero-sub">
-            A library of interface animations built on spring physics instead of
-            fixed-duration easing. Tune stiffness and damping, then copy the
-            CSS, the React, or a ready-made
-            <span class="accent">AI prompt</span> — and drop the motion straight
-            into your app.
+            Explore {{effectCount}} interface animations, from spring-like CSS
+            easing to interactive JavaScript effects. Preview each pattern and
+            copy its snippets, with {{reactCount}} React examples and
+            {{promptCount}} AI prompts available across the library.
           </p>
           <div class="hero-cta">
             <a href="#library" class="btn-primary">Browse the library</a>
-            <a href="#physics" class="btn-secondary mono">How it works</a>
+            <a href="/guides/css-spring-animation/" class="btn-secondary mono">Learn spring animation</a>
           </div>
         </div>
         <div class="hero-meta-col">
@@ -268,6 +270,8 @@
             <div class="search-field">
               <svg
                 class="search-icon"
+                width="17"
+                height="17"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -281,7 +285,7 @@
               <input
                 type="search"
                 id="effect-search"
-                placeholder="Search 162 effects&hellip;"
+                placeholder="Search {{effectCount}} effects&hellip;"
                 aria-label="Search effects"
                 autocomplete="off"
                 spellcheck="false"
@@ -292,14 +296,28 @@
             </div>
           </div>
           <div class="hero-meta">
-            Every effect ships three ways —<br />
-            <b>CSS</b>, <b>React</b>, and a copy-paste
-            <b>AI&nbsp;prompt</b> —<br />
-            alongside a live <b>stiffness / damping</b> readout,<br />
-            so you're copying a tuned spring, not a guess.
+            <b>CSS snippets</b> for every effect.<br />
+            <b>React</b> and <b>AI prompts</b> where labeled.<br />
+            Start with our complete examples for<br />
+            <a href="/effects/">buttons, switches, and expanding panels</a>.
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="learn-band" aria-labelledby="learn-heading">
+    <div class="wrap">
+      <div class="learn-intro">
+        <div>
+          <div class="eyebrow">// preview, understand, implement</div>
+          <h2 id="learn-heading">Start with a complete example.</h2>
+          <p>Each featured example includes its markup, styles, any required JavaScript, and a React component. Learn when CSS easing is enough and when you need a live spring.</p>
+          <p><a href="/tools/spring-animation-generator/">Generate a CSS spring curve</a> with presets, copyable code, and shareable settings.</p>
+        </div>
+        <a class="btn-secondary mono" href="/guides/css-spring-animation/">Read the spring guide</a>
+      </div>
+      <nav class="featured-effect-links" aria-label="Complete animation examples"><!-- featured-effect-links --></nav>
     </div>
   </section>
 
@@ -322,7 +340,7 @@
     <div class="wrap">
       <div class="section-head">
         <h2>Interaction &amp; Input</h2>
-        <span class="count mono">54 / 162</span>
+        <span class="count mono">54 / {{effectCount}}</span>
       </div>
       <div class="gallery">
         <div class="card">
@@ -3179,7 +3197,7 @@
     <div class="wrap">
       <div class="section-head">
         <h2>Feedback &amp; State</h2>
-        <span class="count mono">54 / 162</span>
+        <span class="count mono">54 / {{effectCount}}</span>
       </div>
       <div class="gallery">
         <div class="card">
@@ -5795,7 +5813,7 @@ function Heartbeat() {
     <div class="wrap">
       <div class="section-head">
         <h2>Surface &amp; Motion</h2>
-        <span class="count mono">54 / 162</span>
+        <span class="count mono">54 / {{effectCount}}</span>
       </div>
       <div class="gallery">
         <div class="card">
@@ -8238,20 +8256,17 @@ function Heartbeat() {
             Two numbers,<br />not a duration.
           </h2>
           <p class="dim" style="max-width: 480px; margin-top: 16px">
-            Most CSS motion is built on
-            <span class="mono">duration + easing</span> — a fixed time window
-            forced through a curve. It looks fine until something interrupts it:
-            a second click, a fast scroll, a resize. The animation either snaps
-            or stutters, because a duration has no idea where the interruption
-            left it.
+            A CSS transition uses a duration and an easing curve. An overshooting
+            <span class="mono">cubic-bezier()</span> can look spring-like,
+            but it does not simulate a moving mass or preserve physical velocity.
+            Many demos in this library use that lightweight approach.
           </p>
           <p class="dim" style="max-width: 480px; margin-top: 12px">
-            A spring has two numbers instead:
-            <span class="mono" style="color: var(--bone)">stiffness</span> (how
-            hard it pulls toward the target) and
-            <span class="mono" style="color: var(--bone)">damping</span> (how
-            much it resists oscillating). Interrupt it mid-motion and it just
-            keeps integrating from its current velocity — no snap, no restart.
+            This simulator integrates a spring with fixed mass. Tune
+            <span class="mono">stiffness</span> (the pull toward the target) and
+            <span class="mono">damping</span> (resistance to motion), then release it.
+            A live spring can carry position and velocity into a new target.
+            <a class="text-link" href="/guides/css-spring-animation/">Learn the difference with working code.</a>
           </p>
         </div>
         <div class="physics-demo-card">
@@ -8299,11 +8314,11 @@ function Heartbeat() {
             Built for the copy-paste workflow.
           </h2>
           <p class="dim" style="max-width: 600px; margin-top: 12px">
-            Every demo above ships in both plain CSS and React. No build step,
-            no animation library dependency — take what you need, tune the two
-            numbers in the readout, and move on. If you want to go deeper on the
-            theory behind spring physics in interfaces, motion design courses
-            like animations.dev are worth your time.
+            Browse {{effectCount}} demos with CSS snippets, {{reactCount}} React
+            examples, and {{promptCount}} AI prompts. The labels show what is
+            available for each effect. Our <a class="text-link" href="/effects/">complete
+            examples</a> include their markup and any required JavaScript.
+            Built and maintained by <a class="text-link" href="https://x.com/csaba_kissi">Csaba Kissi</a>.
           </p>
         </div>
       </div>
@@ -8315,7 +8330,7 @@ function Heartbeat() {
   <div class="wrap footer-grid">
     <div class="brand"><span class="dot"></span> Kinetics</div>
     <div class="dim mono" style="font-size: 12px">
-      162 motion patterns. CSS + React. MIT licensed.
+      {{effectCount}} motion patterns. CSS snippets + selected React examples.
     </div>
     <div class="footer-links mono">
       <a

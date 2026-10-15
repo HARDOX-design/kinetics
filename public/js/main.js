@@ -42,6 +42,7 @@
     const param = (card.querySelector('.card-param') || {}).textContent || '';
     modalTitle.innerHTML = name + (param ? '<span class="param">' + param + '</span>' : '');
 
+    modal.dataset.effect = card.id || name;
     modalContent.innerHTML = '';
     const clone = panel.cloneNode(true);
     clone.classList.remove('open');
@@ -99,9 +100,14 @@
         const sel = window.getSelection();
         sel.removeAllRanges();
         sel.addRange(r);
-        document.execCommand('copy');
+        if (!document.execCommand('copy')) {
+          copyBtn.textContent = 'Select and copy';
+          setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
+          return;
+        }
         sel.removeAllRanges();
       }
+      try { window.plausible?.('Copy Code', { props: { effect: modal.dataset.effect, language: visible.dataset.lang, source: 'gallery' } }); } catch {}
       copyBtn.textContent = 'Copied';
       copyBtn.classList.add('copied');
       setTimeout(() => { copyBtn.textContent = 'Copy'; copyBtn.classList.remove('copied'); }, 1400);

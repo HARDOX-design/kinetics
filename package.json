@@ -3,15 +3,17 @@
   "type": "module",
   "version": "1.0.0",
   "private": true,
-  "description": "Kinetics — spring-physics motion patterns for web interfaces. CSS + React, copy-paste ready.",
+  "description": "Kinetics — CSS motion examples, spring-like easing, and interactive UI patterns.",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "npm run build && node scripts/check-seo.mjs && node scripts/check-spring.mjs"
   },
   "dependencies": {
-    "astro": "^4.16.18"
+    "astro": "^4.16.18",
+    "parse5": "^7.3.0"
   }
 }
