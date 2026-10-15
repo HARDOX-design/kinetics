@@ -23,6 +23,29 @@ document.querySelectorAll('[data-copy-code]').forEach((button) => {
   });
 });
 
+document.querySelectorAll('[data-snippet-tabs]').forEach((root) => {
+  const tabs = [...root.querySelectorAll('[role="tab"]')];
+  const select = (tab) => {
+    tabs.forEach((item) => {
+      const active = item === tab;
+      item.setAttribute('aria-selected', String(active));
+      item.tabIndex = active ? 0 : -1;
+      document.getElementById(item.getAttribute('aria-controls')).hidden = !active;
+    });
+  };
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('keydown', (event) => {
+      const next = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: tabs.length - 1 }[event.key];
+      if (next === undefined) return;
+      event.preventDefault();
+      const target = tabs[(next + tabs.length) % tabs.length];
+      select(target);
+      target.focus();
+    });
+  });
+});
+
 document.addEventListener('click', (event) => {
   const link = event.target.closest('a[href]');
   if (!link || location.pathname !== '/guides/css-spring-animation/') return;

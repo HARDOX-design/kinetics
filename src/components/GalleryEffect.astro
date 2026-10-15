@@ -1,6 +1,7 @@
 ---
 import ContentLayout from '../layouts/ContentLayout.astro';
 import SourceBlock from './SourceBlock.astro';
+import CodeTabs from './CodeTabs.astro';
 import { catalog } from '../data/catalog.mjs';
 import { asset } from '../lib/assets.mjs';
 import { effectAssets, runnableExample } from '../lib/effect-assets.mjs';
@@ -15,6 +16,12 @@ const description = `${effect.summary} Try the ${effect.name} live demo and expl
 const crumbs = [{ name: 'Home', path: '/' }, { name: 'Library', path: '/#library' }, { name: effect.name, path: `/effects/${effect.slug}/` }];
 const suggestions = relatedEffects(effect, catalog);
 const labels = { html: 'HTML', css: 'CSS', js: 'JavaScript', react: 'React', prompt: 'AI prompt' };
+const codeBlocks = [
+  { label: 'Preview HTML', code: `<div class="card-stage">${effect.stage}</div>`, language: 'html' },
+  { label: 'Demo CSS', code: assets.css, language: 'css' },
+  ...(assets.js ? [{ label: 'Demo JavaScript', code: assets.js, language: 'js' }] : []),
+  ...effect.snippets.map((snippet) => ({ label: labels[snippet.language] || snippet.language, code: snippet.code, language: snippet.language })),
+];
 ---
 <ContentLayout title={title} description={description} breadcrumbs={crumbs}>
   <Fragment slot="head"><link rel="stylesheet" href={asset('/css/gallery.css')} /><style is:global set:html={assets.css} /></Fragment>
@@ -42,10 +49,7 @@ const labels = { html: 'HTML', css: 'CSS', js: 'JavaScript', react: 'React', pro
       <h2>{effect.name} code snippets</h2>
       <p>Explore the original snippets below. The live preview uses the library’s shared styles and demo script. Some snippets illustrate the technique and need your own markup, imports, or application logic.</p>
       <p class="source-note">The preview uses the <a href={asset('/css/base.css')}>base styles</a>, <a href={asset('/css/gallery.css')}>preview layout</a>, and the original effect code shown below.</p>
-      <SourceBlock label="Preview HTML" code={`<div class="card-stage">${effect.stage}</div>`} effect={effect.slug} language="html" />
-      <SourceBlock label="Original demo CSS" code={assets.css} effect={effect.slug} language="css" />
-      {assets.js && <SourceBlock label="Original demo JavaScript" code={assets.js} effect={effect.slug} language="js" />}
-      {effect.snippets.map((snippet) => <SourceBlock label={labels[snippet.language] || snippet.language} code={snippet.code} effect={effect.slug} language={snippet.language} />)}
+      <CodeTabs id="snippets" label={`${effect.name} code snippets`} effect={effect.slug} blocks={codeBlocks} />
     </section>
     <section class="article-section"><h2>Use this effect in your interface</h2><p>Test the preview with the input methods your interface supports. Keep a visible focus state for controls, offer a button alternative to gestures, and respect reduced-motion preferences in your implementation.</p><p>Browse the <a href="/#library">motion library</a> for more original motion examples. Learn about easing and live physics in the <a href="/guides/css-spring-animation/">spring animation guide</a>, or make an easing curve with the <a href="/tools/spring-animation-generator/">spring animation generator</a>.</p></section>
     <section class="article-section wide" id="related"><h2>Related motion effects</h2><div class="example-grid">{suggestions.map((item) => <a class="example-link" href={`/effects/${item.slug}/`}><span class="mono">{item.method}</span><h3>{item.name}</h3><p>{item.summary}</p></a>)}</div><p><a href="/#library">Browse every motion effect</a> or <a href={`/#${effect.slug}`}>return to this card in the gallery</a>.</p></section>

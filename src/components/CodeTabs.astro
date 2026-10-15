@@ -1,0 +1,11 @@
+---
+import SourceBlock from './SourceBlock.astro';
+interface Props { id: string; label: string; effect?: string; blocks: { label: string; code: string; language?: string }[]; }
+const { id, label, effect, blocks } = Astro.props;
+---
+<div class="snippet-tabs" data-snippet-tabs>
+  <div class="snippet-tablist" role="tablist" aria-label={label}>
+    {blocks.map((block, index) => <button type="button" role="tab" id={`${id}-tab-${index}`} aria-controls={`${id}-panel-${index}`} aria-selected={index === 0 ? 'true' : 'false'} tabindex={index === 0 ? 0 : -1}>{block.label}</button>)}
+  </div>
+  {blocks.map((block, index) => <div class="snippet-tab-panel" role="tabpanel" id={`${id}-panel-${index}`} aria-labelledby={`${id}-tab-${index}`} hidden={index !== 0}><SourceBlock label={block.label} code={block.code} effect={effect} language={block.language} /></div>)}
+</div>
