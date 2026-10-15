@@ -38,7 +38,11 @@ if (root) {
   root.querySelectorAll('[data-preset]').forEach(button => button.addEventListener('click', () => update(presets[button.dataset.preset])));
   root.querySelector('[data-preview]').addEventListener('click', preview);
   reduced.addEventListener('change', preview);
-  new ResizeObserver(() => { animation?.cancel(); ball.style.transform = `translateX(${Math.max(0, (stage.clientWidth - 130) * 0.65)}px)`; }).observe(stage);
+  let lastWidth = stage.clientWidth;
+  new ResizeObserver(() => {
+    if (stage.clientWidth === lastWidth) return;
+    lastWidth = stage.clientWidth;
+    animation?.cancel(); ball.style.transform = `translateX(${Math.max(0, (stage.clientWidth - 130) * 0.65)}px)`; }).observe(stage);
   root.querySelector('[data-share]').addEventListener('click', async () => {
     const url = new URL(location.pathname, location.origin);
     url.search = new URLSearchParams(curve.params).toString();

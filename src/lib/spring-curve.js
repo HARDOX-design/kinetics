@@ -7,7 +7,9 @@ export const limits = { stiffness: [80, 500], damping: [8, 50], mass: [0.5, 2] }
 export function normalizeSpring(input = {}) {
   return Object.fromEntries(Object.entries(limits).map(([key, [min, max]]) => {
     const value = Number(input[key]);
-    return [key, Number.isFinite(value) && input[key] !== null && input[key] !== '' ? Math.round(Math.max(min, Math.min(max, value)) * 100) / 100 : presets.snappy[key]];
+    const step = key === 'mass' ? 0.05 : 1;
+    const rounded = Math.round(Math.max(min, Math.min(max, value)) / step) * step;
+    return [key, Number.isFinite(value) && input[key] !== null && input[key] !== '' ? Math.round(rounded * 100) / 100 : presets.snappy[key]];
   }));
 }
 export function springCurve(input) {

@@ -100,7 +100,9 @@
         const sel = window.getSelection();
         sel.removeAllRanges();
         sel.addRange(r);
-        if (!document.execCommand('copy')) {
+        let copied = false;
+        try { copied = document.execCommand('copy'); } catch {}
+        if (!copied) {
           copyBtn.textContent = 'Select and copy';
           setTimeout(() => { copyBtn.textContent = 'Copy'; }, 2000);
           return;

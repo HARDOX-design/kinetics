@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { springCurve, normalizeSpring, presets, springCode } from '../src/lib/spring-curve.js';
 assert.deepEqual(normalizeSpring({ stiffness: 'no', mass: Infinity, damping: '' }), presets.snappy);
 assert.deepEqual(normalizeSpring({stiffness: -2, damping: 100, mass: 20}), {stiffness:80,damping:50,mass:2});
+assert.equal(normalizeSpring({mass:1.03}).mass,1.05);
 for (const stiffness of [80, 320, 500]) for (const damping of [8, 2*Math.sqrt(stiffness), 50]) for (const mass of [.5,1,2]) {
   const curve = springCurve({stiffness,damping,mass});
   assert.equal(curve.values[0],0);
