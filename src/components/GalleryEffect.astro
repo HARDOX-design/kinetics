@@ -2,6 +2,8 @@
 import ContentLayout from '../layouts/ContentLayout.astro';
 import SourceBlock from './SourceBlock.astro';
 import CodeTabs from './CodeTabs.astro';
+import ProWaitlist from './ProWaitlist.astro';
+import { buttondownUsername } from '../data/site.mjs';
 import { catalog } from '../data/catalog.mjs';
 import { asset } from '../lib/assets.mjs';
 import { effectAssets, runnableExample } from '../lib/effect-assets.mjs';
@@ -31,7 +33,7 @@ const codeBlocks = [
       <h1>{guide?.title || `${effect.name} animation`}</h1>
       <p class="article-lead">{effect.summary}</p>
     </header>
-    <nav class="on-this-page" aria-label="On this page"><a href="#demo">Live demo</a>{guide && <a href="#how-it-works">How it works</a>}<a href="#implementation">Code snippets</a>{guide && <a href="#troubleshooting">Troubleshooting</a>}<a href="#related">Related effects</a></nav>
+    <nav class="on-this-page" aria-label="On this page"><a href="#demo">Live demo</a>{guide && <a href="#how-it-works">How it works</a>}<a href="#implementation">Code snippets</a>{buttondownUsername && <a href="#production">Production version</a>}{guide && <a href="#troubleshooting">Troubleshooting</a>}<a href="#related">Related effects</a></nav>
     <section id="demo" aria-label={`${effect.name} live demo`}>
       <div class="card effect-preview">
         <div class="card-stage"><Fragment set:html={effect.stage} /></div>
@@ -51,6 +53,7 @@ const codeBlocks = [
       <p class="source-note">The preview uses the <a href={asset('/css/base.css')}>base styles</a>, <a href={asset('/css/gallery.css')}>preview layout</a>, and the original effect code shown below.</p>
       <CodeTabs id="snippets" label={`${effect.name} code snippets`} effect={effect.slug} blocks={codeBlocks} />
     </section>
+    <ProWaitlist effect={effect} />
     <section class="article-section"><h2>Use this effect in your interface</h2><p>Test the preview with the input methods your interface supports. Keep a visible focus state for controls, offer a button alternative to gestures, and respect reduced-motion preferences in your implementation.</p><p>Browse the <a href="/#library">motion library</a> for more original motion examples. Learn about easing and live physics in the <a href="/guides/css-spring-animation/">spring animation guide</a>, or make an easing curve with the <a href="/tools/spring-animation-generator/">spring animation generator</a>.</p></section>
     <section class="article-section wide" id="related"><h2>Related motion effects</h2><div class="example-grid">{suggestions.map((item) => <a class="example-link" href={`/effects/${item.slug}/`}><span class="mono">{item.method}</span><h3>{item.name}</h3><p>{item.summary}</p></a>)}</div><p><a href="/#library">Browse every motion effect</a> or <a href={`/#${effect.slug}`}>return to this card in the gallery</a>.</p></section>
   </article>

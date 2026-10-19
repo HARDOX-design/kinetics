@@ -4,6 +4,7 @@ import { Script } from 'node:vm';
 import { parse, serialize } from 'parse5';
 import { catalog } from '../src/data/catalog.mjs';
 import { effectGuides } from '../src/data/effect-guides.mjs';
+import { buttondownUsername } from '../src/data/site.mjs';
 import { effectAssets, runnableExample } from '../src/lib/effect-assets.mjs';
 import { relatedEffects, effectTopic } from '../src/lib/effect-discovery.mjs';
 
@@ -20,6 +21,12 @@ for (const effect of catalog) {
   const all = nodes(parse(html));
   assert.ok(!all.some((node) => node.tagName === 'script' && attr(node, 'src')?.includes('/js/main.js')), `${effect.slug}: no full demo runtime`);
   assert.ok(!all.some((node) => node.tagName === 'link' && /\/css\/effects-[abc]\.css/.test(attr(node, 'href') || '')), `${effect.slug}: no full effect stylesheets`);
+  const waitlist = all.find((node) => node.tagName === 'form' && attr(node, 'data-waitlist') !== undefined);
+  if (buttondownUsername) {
+    assert.equal(attr(waitlist, 'action'), `https://buttondown.com/api/emails/embed-subscribe/${buttondownUsername}`, `${effect.slug}: waitlist posts to Buttondown`);
+    const hidden = Object.fromEntries(nodes(waitlist).filter((node) => attr(node, 'type') === 'hidden').map((node) => [attr(node, 'name'), attr(node, 'value')]));
+    assert.deepEqual(hidden, { tag: 'kinetics-pro', metadata__effect: effect.slug }, `${effect.slug}: waitlist tags the effect`);
+  } else assert.equal(waitlist, undefined, `${effect.slug}: no waitlist without a Buttondown username`);
   const related = relatedEffects(effect, catalog);
   assert.equal(related.length, 4);
   assert.equal(new Set(related.map((item) => item.slug)).size, 4);

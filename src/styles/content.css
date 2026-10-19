@@ -58,8 +58,21 @@
 .article-note { margin-top: 24px; padding: 20px 24px; border-left: 2px solid var(--amber); background: var(--card); color: var(--bone-dim); line-height: 1.8; }
 .article-footer { padding-block: 28px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; color: var(--bone-dim); font: 12px/1.8 var(--font-mono); }
 .article-footer a:hover { color: var(--amber); }
+.waitlist { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr); gap: 40px; align-items: center; padding: 44px; border: 1px solid color-mix(in srgb, var(--amber) 55%, var(--line)); border-radius: 20px; background: radial-gradient(ellipse at top left, color-mix(in srgb, var(--amber) 16%, transparent), transparent 60%), var(--card); box-shadow: 0 30px 80px -40px color-mix(in srgb, var(--amber) 55%, transparent); scroll-margin-top: 24px; }
+.waitlist h2 { margin: 12px 0 16px; font-size: clamp(28px, 4vw, 42px); line-height: 1.1; letter-spacing: -.03em; }
+.article-section .waitlist-features { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; padding: 0; list-style: none; }
+.article-section .waitlist-features li { margin: 0; padding: 4px 12px; border: 1px solid var(--line); border-radius: 100px; background: var(--graphite-2); color: var(--bone); font: 12px/1.8 var(--font-mono); }
+.waitlist-features li::before { content: '✓ '; color: var(--amber); }
+.waitlist-form { display: grid; gap: 12px; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--graphite-2); }
+.waitlist-form label { color: var(--bone); font: 12px/1.8 var(--font-mono); }
+.waitlist-form input { min-width: 0; min-height: 52px; padding: 0 18px; border: 1px solid #54545b; border-radius: 100px; background: #101013; color: var(--bone); font-size: 16px; }
+.waitlist-form input:focus-visible { outline: 2px solid var(--wire); outline-offset: 2px; }
+.waitlist-form button { min-height: 52px; font-size: 16px; }
+.article-section .waitlist-note, .article-section .waitlist-status { margin: 0; font: 12px/1.8 var(--font-mono); }
+.article-section .waitlist-status:empty { display: none; }
 .guide-simulator { max-width: 700px; margin-top: 24px; }
 .guide-simulator .physics-demo-card { background: var(--card); }
+@media (max-width: 860px) { .waitlist { grid-template-columns: 1fr; } }
 @media (max-width: 600px) {
   .article-header-inner { gap: 8px; flex-wrap: wrap; padding-block: 12px; }
   .article-nav { width: 100%; gap: 24px; justify-content: space-between; }
@@ -67,6 +80,8 @@
   .breadcrumbs { margin-bottom: 28px; }
   .example-grid { grid-template-columns: 1fr; }
   .demo-frame { padding-inline: 16px; }
+  .waitlist { padding: 28px 20px; gap: 24px; }
+  .waitlist-form { padding: 18px; }
   .source-block pre { padding: 16px; font-size: 11px; }
 }
 .simulator-source { margin-top: 24px; }

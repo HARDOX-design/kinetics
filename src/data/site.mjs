@@ -1,5 +1,7 @@
 import { catalog } from './catalog.mjs';
 export const site = 'https://kinetics.colorion.co';
+// The Pro waitlist on effect pages posts to this Buttondown newsletter. Leave empty to hide it.
+export const buttondownUsername = 'kissi';
 // Update these dates only when the corresponding content changes substantially.
 export const updated = '2026-10-15';
 export const updatedLabel = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(`${updated}T12:00:00Z`));

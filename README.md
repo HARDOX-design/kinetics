@@ -32,6 +32,10 @@ Gallery snippets illustrate the original effects. They are not all complete stan
 
 The homepage pauses decorative CSS animations outside the viewport and while the document is hidden. The cursor trail runs only during pointer interaction, and the header waveform stops when it is not visible. These controls preserve the original visible motion.
 
+## Pro waitlist
+
+Each effect page ends its code section with a “Get the production version” waitlist. The form posts directly to Buttondown with the `kinetics-pro` tag and the effect slug in `metadata__effect`, so no server is needed. Set `buttondownUsername` in `src/data/site.mjs` to show it. The waitlist stays hidden while the username is empty. Buttondown opens in a new tab to confirm the subscription.
+
 ## Hosting and canonical URLs
 
 The production origin is `https://kinetics.colorion.co`. Deploy the `dist` directory after `npm run check`.
@@ -48,7 +52,7 @@ Archivo, Inter, and JetBrains Mono load from Google Fonts.
 
 ## Conversion measurement
 
-The existing Plausible tracker receives `Copy Code` (effect, language, source), `Guide Example Click` (effect), and `Share Spring` (source). Copy events fire only after a successful clipboard action. Create matching custom event goals in the Plausible site settings to display conversions. No code contents or clipboard contents are sent.
+The existing Plausible tracker receives `Copy Code` (effect, language, source), `Guide Example Click` (effect), and `Share Spring` (source). Copy events fire only after a successful clipboard action. Effect pages also send `Waitlist Signup` (effect, source) when a visitor submits a valid email to the Pro waitlist. Create matching custom event goals in the Plausible site settings to display conversions. No code, clipboard contents, or email addresses are sent to Plausible.
 
 Compare Google Search Console clicks and impressions over equal 28-day periods after launch. Review non-brand queries, the guide, the generator, and each effect page separately. Indexing and ranking changes can take longer than a reporting period.
 
