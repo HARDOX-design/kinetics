@@ -1,62 +1,12 @@
 /* ============================================================
    Kinetics — physics-demo.js
-   Signature oscilloscope waveform + interactive spring sim
+   Interactive spring sim
    ============================================================ */
 (function () {
   'use strict';
 
   const reduce = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---------------------------------------------------------
-     Header oscilloscope: two phase-shifted sine waves
-  --------------------------------------------------------- */
-  (function scope() {
-    const wave = document.getElementById('wave-path');
-    const wave2 = document.getElementById('wave-path-2');
-    if (!wave) return;
-
-    const W = 1200, H = 84, MID = 42, STEP = 12;
-    let t = 0;
-    let frame = null;
-    let visible = true;
-
-    const build = (phase, amp, freq) => {
-      let pts = '';
-      for (let x = 0; x <= W; x += STEP) {
-        const decay = 0.55 + 0.45 * Math.sin((x / W) * Math.PI); // taper at edges
-        const y = MID + Math.sin(x * freq + phase) * amp * decay;
-        pts += x + ',' + y.toFixed(1) + ' ';
-      }
-      return pts.trim();
-    };
-
-    const render = () => {
-      frame = null;
-      if (document.hidden || !visible || reduce) return;
-      t += 0.045;
-      wave.setAttribute('points', build(t, 18, 0.012));
-      if (wave2) wave2.setAttribute('points', build(t * 0.7 + 1.5, 11, 0.018));
-      frame = requestAnimationFrame(render);
-    };
-    const sync = () => {
-      if (document.hidden || !visible) {
-        cancelAnimationFrame(frame);
-        frame = null;
-      } else if (!reduce && frame === null) frame = requestAnimationFrame(render);
-    };
-    document.addEventListener('visibilitychange', sync);
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver((entries) => { visible = entries[0].isIntersecting; sync(); }).observe(wave.closest('svg'));
-    }
-
-    if (reduce) {
-      wave.setAttribute('points', build(0, 18, 0.012));
-      if (wave2) wave2.setAttribute('points', build(1.5, 11, 0.018));
-    } else {
-      sync();
-    }
-  })();
 
   /* ---------------------------------------------------------
      Interactive spring simulator

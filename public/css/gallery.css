@@ -376,3 +376,6 @@
 .standalone-demo { width: 100%; display: grid; place-items: center; padding-top: 14px; }
 .standalone-demo .resize-card { padding: 18px; }
 .text-link { color: var(--bone); text-decoration: underline; text-decoration-color: var(--amber); text-underline-offset: 5px; }
+
+/* Keep the library start clear of the sticky header when jumped to. */
+#library { scroll-margin-top: 64px; }

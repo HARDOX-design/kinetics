@@ -16,7 +16,6 @@
     <nav class="nav-links">
       <a href="#library">Library</a>
       <a href="#physics">Physics</a>
-      <a href="/guides/css-spring-animation/">Spring guide</a>
       <a href="/tools/spring-animation-generator/">Generator</a>
       <a href="#about">About</a>
       <div class="nav-dropdown">
@@ -139,7 +138,6 @@
     </div>
     <div class="mobile-nav" id="mobile-nav" hidden>
       <nav class="nav-links mobile-nav-links" aria-label="Mobile">
-        <a href="/guides/css-spring-animation/">Spring guide</a>
         <a href="/tools/spring-animation-generator/">Generator</a>
         <a
           href="https://colorion.co?ref=kinetics.colorion.co"
@@ -233,23 +231,6 @@
 <main id="main">
   <section class="hero">
     <div class="wrap">
-      <div class="hero-scope">
-        <svg viewBox="0 0 1200 84" preserveAspectRatio="none">
-          <line x1="0" y1="42" x2="1200" y2="42" class="grid-line"></line>
-          <polyline
-            id="wave-path-2"
-            class="wave secondary"
-            points=""
-          ></polyline>
-          <polyline id="wave-path" class="wave" points=""></polyline>
-        </svg>
-        <div class="hero-readout">
-          <span>damping <b>24</b></span>
-          <span>stiffness <b>320</b></span>
-          <span>mass <b>1.0</b></span>
-        </div>
-      </div>
-
       <div class="hero-grid">
         <div>
           <div class="eyebrow">// {{effectCount}} interface animations</div>
@@ -265,7 +246,6 @@
           </p>
           <div class="hero-cta">
             <a href="#library" class="btn-primary">Browse the library</a>
-            <a href="/guides/css-spring-animation/" class="btn-secondary mono">Learn spring animation</a>
           </div>
         </div>
         <div class="hero-meta-col">
@@ -297,6 +277,32 @@
               <button class="search-clear mono" id="search-clear" hidden aria-label="Clear search">✕</button>
               <kbd class="search-kbd mono" aria-hidden="true">/</kbd>
             </div>
+          </div>
+          <div class="hero-reel" aria-label="Effect previews">
+            <a class="hero-tile" href="#library">
+              <span class="tile-stage" aria-hidden="true"><span class="ht-press">Save</span></span>
+              <span class="tile-label mono">button</span>
+            </a>
+            <a class="hero-tile" href="#library">
+              <span class="tile-stage" aria-hidden="true"><span class="ht-toggle"><i></i></span></span>
+              <span class="tile-label mono">toggle</span>
+            </a>
+            <a class="hero-tile" href="#library">
+              <span class="tile-stage" aria-hidden="true"><span class="ht-dots"><i></i><i></i><i></i></span></span>
+              <span class="tile-label mono">loading</span>
+            </a>
+            <a class="hero-tile" href="#library">
+              <span class="tile-stage" aria-hidden="true"><span class="ht-expand"><i></i><i></i><i></i></span></span>
+              <span class="tile-label mono">expand</span>
+            </a>
+            <a class="hero-tile" href="#library">
+              <span class="tile-stage" aria-hidden="true"><span class="ht-cards"><i></i><i></i><i></i></span></span>
+              <span class="tile-label mono">card</span>
+            </a>
+            <a class="hero-tile" href="#library">
+              <span class="tile-stage" aria-hidden="true"><span class="ht-text"><i>M</i><i>o</i><i>t</i><i>i</i><i>o</i><i>n</i></span></span>
+              <span class="tile-label mono">text</span>
+            </a>
           </div>
           <div class="hero-meta">
             <b>CSS snippets</b> for every effect.<br />
@@ -8321,6 +8327,7 @@ function Heartbeat() {
       {{effectCount}} motion patterns. CSS snippets + selected React examples.
     </div>
     <div class="footer-links mono">
+      <a href="/guides/css-spring-animation/">Spring guide</a>
       <a
         href="https://github.com/ckissi/kinetics"
         target="_blank"
