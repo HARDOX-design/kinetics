@@ -46,12 +46,13 @@ document.querySelectorAll('[data-snippet-tabs]').forEach((root) => {
   });
 });
 
-document.querySelectorAll('[data-waitlist]').forEach((form) => {
-  // The browser validates the email before submit fires, so this counts real sign-up attempts.
-  form.addEventListener('submit', () => {
-    track('Waitlist Signup', { effect: form.dataset.waitlistEffect, source: location.pathname });
-    form.querySelector('[role="status"]').textContent = 'Finish in the Buttondown tab, then confirm from your inbox.';
-  });
+// Delegated so forms added later, such as the one in the homepage code modal, are tracked too.
+// The browser validates the email before submit fires, so this counts real sign-up attempts.
+document.addEventListener('submit', (event) => {
+  const form = event.target.closest('[data-waitlist]');
+  if (!form) return;
+  track('Waitlist Signup', { effect: form.dataset.waitlistEffect || 'none', placement: form.dataset.waitlistPlacement, source: location.pathname });
+  form.querySelector('[role="status"]').textContent = 'Finish in the Buttondown tab, then confirm from your inbox.';
 });
 
 document.addEventListener('click', (event) => {

@@ -63,13 +63,10 @@
 .article-section .waitlist-features { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; padding: 0; list-style: none; }
 .article-section .waitlist-features li { margin: 0; padding: 4px 12px; border: 1px solid var(--line); border-radius: 100px; background: var(--graphite-2); color: var(--bone); font: 12px/1.8 var(--font-mono); }
 .waitlist-features li::before { content: '✓ '; color: var(--amber); }
-.waitlist-form { display: grid; gap: 12px; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--graphite-2); }
-.waitlist-form label { color: var(--bone); font: 12px/1.8 var(--font-mono); }
-.waitlist-form input { min-width: 0; min-height: 52px; padding: 0 18px; border: 1px solid #54545b; border-radius: 100px; background: #101013; color: var(--bone); font-size: 16px; }
-.waitlist-form input:focus-visible { outline: 2px solid var(--wire); outline-offset: 2px; }
-.waitlist-form button { min-height: 52px; font-size: 16px; }
-.article-section .waitlist-note, .article-section .waitlist-status { margin: 0; font: 12px/1.8 var(--font-mono); }
-.article-section .waitlist-status:empty { display: none; }
+.waitlist .waitlist-form { padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--graphite-2); }
+.waitlist .waitlist-fields { display: grid; gap: 12px; }
+.waitlist .waitlist-form input, .waitlist .waitlist-form button { min-height: 52px; font-size: 16px; }
+.article-section .waitlist-note, .article-section .waitlist-status { margin: 12px 0 0; font: 12px/1.8 var(--font-mono); }
 .guide-simulator { max-width: 700px; margin-top: 24px; }
 .guide-simulator .physics-demo-card { background: var(--card); }
 @media (max-width: 860px) { .waitlist { grid-template-columns: 1fr; } }

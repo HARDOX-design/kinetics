@@ -34,7 +34,7 @@ The homepage pauses decorative CSS animations outside the viewport and while the
 
 ## Pro waitlist
 
-Each effect page ends its code section with a “Get the production version” waitlist. The form posts directly to Buttondown with the `kinetics-pro` tag and the effect slug in `metadata__effect`, so no server is needed. Set `buttondownUsername` in `src/data/site.mjs` to show it. The waitlist stays hidden while the username is empty. Buttondown opens in a new tab to confirm the subscription.
+Each effect page ends its code section with a “Get the production version” waitlist. The homepage shows a short banner above the library, and the gallery’s code modal clones a compact form from a `<template>` for the open effect. The `placement` property tells them apart: `effect-page`, `home-banner`, or `code-modal`. Every form posts directly to Buttondown with the `kinetics-pro` tag and the effect slug in `metadata__effect`, so no server is needed. Set `buttondownUsername` in `src/data/site.mjs` to show it. The waitlist stays hidden while the username is empty. Buttondown opens in a new tab to confirm the subscription.
 
 ## Hosting and canonical URLs
 
@@ -52,7 +52,7 @@ Archivo, Inter, and JetBrains Mono load from Google Fonts.
 
 ## Conversion measurement
 
-The existing Plausible tracker receives `Copy Code` (effect, language, source), `Guide Example Click` (effect), and `Share Spring` (source). Copy events fire only after a successful clipboard action. Effect pages also send `Waitlist Signup` (effect, source) when a visitor submits a valid email to the Pro waitlist. Create matching custom event goals in the Plausible site settings to display conversions. No code, clipboard contents, or email addresses are sent to Plausible.
+The existing Plausible tracker receives `Copy Code` (effect, language, source), `Guide Example Click` (effect), and `Share Spring` (source). Copy events fire only after a successful clipboard action. Pro waitlist forms send `Waitlist Signup` (effect, placement, source) when a visitor submits a valid email. Create matching custom event goals in the Plausible site settings to display conversions. No code, clipboard contents, or email addresses are sent to Plausible.
 
 Compare Google Search Console clicks and impressions over equal 28-day periods after launch. Review non-brand queries, the guide, the generator, and each effect page separately. Indexing and ranking changes can take longer than a reporting period.
 

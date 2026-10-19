@@ -1,0 +1,17 @@
+---
+import { buttondownUsername } from '../data/site.mjs';
+// placement separates sign-ups by location in Plausible. An empty effect is filled in by the code modal when it opens.
+interface Props { id: string; placement: string; effect?: string }
+const { id, placement, effect } = Astro.props;
+---
+<form class="waitlist-form" action={`https://buttondown.com/api/emails/embed-subscribe/${buttondownUsername}`} method="post" target="_blank" rel="noopener" data-waitlist data-waitlist-placement={placement} data-waitlist-effect={effect}>
+  <label for={id}>Email address</label>
+  <div class="waitlist-fields">
+    <input id={id} type="email" name="email" required autocomplete="email" placeholder="you@company.com" />
+    <button class="btn-primary" type="submit">Join the waitlist</button>
+  </div>
+  <input type="hidden" name="tag" value="kinetics-pro" />
+  {effect !== undefined && <input type="hidden" name="metadata__effect" value={effect} />}
+  <p class="waitlist-note">Buttondown opens in a new tab to confirm. Unsubscribe anytime.</p>
+  <p class="waitlist-status" role="status" aria-live="polite"></p>
+</form>

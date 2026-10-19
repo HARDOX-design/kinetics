@@ -1,0 +1,26 @@
+---
+import { buttondownUsername } from '../data/site.mjs';
+import WaitlistForm from './WaitlistForm.astro';
+---
+{buttondownUsername && <>
+  <aside class="pro-banner" aria-labelledby="pro-banner-title">
+    <div class="wrap">
+      <div class="waitlist-inline">
+        <div class="waitlist-inline-copy">
+          <div class="eyebrow">// Kinetics Pro · Waitlist</div>
+          <p id="pro-banner-title"><strong>Production-ready React versions of these effects are coming.</strong> Typed, accessible, reduced-motion ready, and installed with one command.</p>
+        </div>
+        <WaitlistForm id="pro-banner-email" placement="home-banner" />
+      </div>
+    </div>
+  </aside>
+  <template id="code-modal-waitlist">
+    <div class="waitlist-inline code-modal-waitlist">
+      <div class="waitlist-inline-copy">
+        <div class="eyebrow">// Kinetics Pro</div>
+        <p><strong>Want the production version?</strong> A typed React component with keyboard, focus, and reduced-motion support.</p>
+      </div>
+      <WaitlistForm id="code-modal-email" placement="code-modal" effect="" />
+    </div>
+  </template>
+</>}

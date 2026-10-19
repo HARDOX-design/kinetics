@@ -8,7 +8,7 @@ import { buttondownUsername } from '../src/data/site.mjs';
 import { effectAssets, runnableExample } from '../src/lib/effect-assets.mjs';
 import { relatedEffects, effectTopic } from '../src/lib/effect-discovery.mjs';
 
-const nodes = (node) => [node, ...(node.childNodes || []).flatMap(nodes)];
+const nodes = (node) => [node, ...(node.content ? nodes(node.content) : []), ...(node.childNodes || []).flatMap(nodes)];
 const attr = (node, key) => node.attrs?.find((item) => item.name === key)?.value;
 const cssFiles = ['a', 'b', 'c'].map((part) => readFileSync(new URL(`../public/css/effects-${part}.css`, import.meta.url), 'utf8'));
 const originalBytes = cssFiles.join('').length + readFileSync(new URL('../public/js/main.js', import.meta.url), 'utf8').length;
@@ -26,6 +26,7 @@ for (const effect of catalog) {
     assert.equal(attr(waitlist, 'action'), `https://buttondown.com/api/emails/embed-subscribe/${buttondownUsername}`, `${effect.slug}: waitlist posts to Buttondown`);
     const hidden = Object.fromEntries(nodes(waitlist).filter((node) => attr(node, 'type') === 'hidden').map((node) => [attr(node, 'name'), attr(node, 'value')]));
     assert.deepEqual(hidden, { tag: 'kinetics-pro', metadata__effect: effect.slug }, `${effect.slug}: waitlist tags the effect`);
+    assert.equal(attr(waitlist, 'data-waitlist-placement'), 'effect-page');
   } else assert.equal(waitlist, undefined, `${effect.slug}: no waitlist without a Buttondown username`);
   const related = relatedEffects(effect, catalog);
   assert.equal(related.length, 4);
@@ -42,5 +43,7 @@ for (const effect of catalog) {
   for (const script of example.filter((node) => node.tagName === 'script')) new Script((script.childNodes || []).map((node) => node.value || '').join(''));
   for (const id of ['how-it-works', 'troubleshooting']) assert.ok(all.some((node) => attr(node, 'id') === id), `${effect.slug}: ${id} content`);
 }
+const homeForms = nodes(parse(readFileSync(new URL('../dist/index.html', import.meta.url), 'utf8'))).filter((node) => node.tagName === 'form' && attr(node, 'data-waitlist') !== undefined);
+assert.deepEqual(homeForms.map((form) => attr(form, 'data-waitlist-placement')), buttondownUsername ? ['home-banner', 'code-modal'] : [], 'Homepage waitlist banner and code modal template');
 assert.ok(totalBytes / catalog.length < originalBytes / 5, 'Effect-specific assets substantially reduce the original payload');
 console.log(`Effect checks passed: ${catalog.length} scoped runtimes and related-link sets, 5 standalone examples. Average CSS/JS: ${Math.round(totalBytes / catalog.length)} bytes versus ${originalBytes} bytes before (uncompressed, excludes shared layout).`);

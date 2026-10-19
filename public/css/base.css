@@ -462,3 +462,20 @@ input {
 .skip-link { position: fixed; top: 8px; left: 8px; z-index: 100; padding: 12px 18px; color: var(--graphite); background: var(--amber); transform: translateY(-150%); }
 .skip-link:focus { transform: none; }
 a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--wire); outline-offset: 4px; }
+
+/* ---- Pro waitlist form: effect pages, homepage banner, and code modal ---- */
+.waitlist-form label { display: block; margin-bottom: 8px; color: var(--bone); font: 12px/1.8 var(--font-mono); }
+.waitlist-fields { display: flex; flex-wrap: wrap; gap: 10px; }
+.waitlist-form input { flex: 1 1 200px; min-width: 0; min-height: 46px; padding: 0 18px; border: 1px solid #54545b; border-radius: 100px; background: #101013; color: var(--bone); font-size: 16px; }
+.waitlist-form input:focus-visible { outline: 2px solid var(--wire); outline-offset: 2px; }
+.waitlist-form button { min-height: 46px; }
+.waitlist-note, .waitlist-status { margin-top: 8px; color: var(--bone-dim); font: 11px/1.7 var(--font-mono); }
+.waitlist-status:empty { display: none; }
+.waitlist-inline { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 440px); gap: 16px 40px; align-items: center; }
+.waitlist-inline-copy p { margin-top: 8px; color: var(--bone-dim); line-height: 1.6; }
+.waitlist-inline-copy strong { color: var(--bone); font-weight: 600; }
+.waitlist-inline .waitlist-form label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.pro-banner { padding-block: 26px; border-block: 1px solid color-mix(in srgb, var(--amber) 40%, var(--line)); background: radial-gradient(ellipse at left, color-mix(in srgb, var(--amber) 13%, transparent), transparent 65%), var(--graphite-2); }
+.code-modal-waitlist { flex: none; grid-template-columns: 1fr; gap: 12px; padding: 16px 18px; border-top: 1px solid color-mix(in srgb, var(--amber) 40%, var(--line)); background: radial-gradient(ellipse at top left, color-mix(in srgb, var(--amber) 12%, transparent), transparent 70%), var(--card); }
+.code-modal-waitlist .waitlist-inline-copy p { margin-top: 4px; font-size: 14px; }
+@media (max-width: 760px) { .waitlist-inline { grid-template-columns: 1fr; } .waitlist-form button { flex: 1 1 100%; } }

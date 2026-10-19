@@ -1,8 +1,8 @@
 ---
 import { buttondownUsername } from '../data/site.mjs';
+import WaitlistForm from './WaitlistForm.astro';
 interface Props { effect: { slug: string; name: string } }
 const { effect } = Astro.props;
-const action = `https://buttondown.com/api/emails/embed-subscribe/${buttondownUsername}`;
 const features = ['Typed React component', 'Keyboard and focus handling', 'Reduced-motion support', 'Adjustable props', 'One-command install'];
 ---
 {buttondownUsername && <section class="article-section wide waitlist" id="production" aria-labelledby="production-title">
@@ -12,13 +12,5 @@ const features = ['Typed React component', 'Keyboard and focus handling', 'Reduc
     <p>The snippets above show the technique. Production-ready versions of the library’s effects are in progress. Join the waitlist to get an email when the {effect.name} component is ready.</p>
     <ul class="waitlist-features">{features.map((feature) => <li>{feature}</li>)}</ul>
   </div>
-  <form class="waitlist-form" action={action} method="post" target="_blank" rel="noopener" data-waitlist data-waitlist-effect={effect.slug}>
-    <label for="waitlist-email">Email address</label>
-    <input id="waitlist-email" type="email" name="email" required autocomplete="email" placeholder="you@company.com" />
-    <button class="btn-primary" type="submit">Join the waitlist</button>
-    <input type="hidden" name="tag" value="kinetics-pro" />
-    <input type="hidden" name="metadata__effect" value={effect.slug} />
-    <p class="waitlist-note">Buttondown opens in a new tab to confirm your subscription. Unsubscribe anytime.</p>
-    <p class="waitlist-status" role="status" aria-live="polite"></p>
-  </form>
+  <WaitlistForm id="waitlist-email" placement="effect-page" effect={effect.slug} />
 </section>}

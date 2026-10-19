@@ -26,6 +26,7 @@
           '<button class="code-modal-close" data-close aria-label="Close">✕</button>' +
         '</div>' +
         '<div class="code-modal-content"></div>' +
+        '<div class="code-modal-foot"></div>' +
       '</div>';
     document.body.appendChild(el);
     return el;
@@ -33,6 +34,8 @@
 
   const modalTitle = $('.code-modal-title', modal);
   const modalContent = $('.code-modal-content', modal);
+  const modalFoot = $('.code-modal-foot', modal);
+  const waitlistTemplate = $('#code-modal-waitlist');
   let lastTrigger = null;
 
   const openModal = (card) => {
@@ -55,6 +58,16 @@
     const first = tabs[0] && tabs[0].dataset.lang;
     pres.forEach((p) => p.classList.toggle('hidden', p.dataset.lang !== first));
 
+    // Pro waitlist, rendered on the page only when it is configured
+    modalFoot.innerHTML = '';
+    if (waitlistTemplate) {
+      const waitlist = waitlistTemplate.content.cloneNode(true);
+      const form = $('[data-waitlist]', waitlist);
+      form.dataset.waitlistEffect = modal.dataset.effect;
+      $('input[name="metadata__effect"]', form).value = modal.dataset.effect;
+      modalFoot.appendChild(waitlist);
+    }
+
     modal.hidden = false;
     requestAnimationFrame(() => modal.classList.add('open'));
     document.body.style.overflow = 'hidden';
@@ -63,7 +76,7 @@
   const closeModal = () => {
     modal.classList.remove('open');
     document.body.style.overflow = '';
-    setTimeout(() => { modal.hidden = true; modalContent.innerHTML = ''; }, 280);
+    setTimeout(() => { modal.hidden = true; modalContent.innerHTML = ''; modalFoot.innerHTML = ''; }, 280);
     if (lastTrigger) lastTrigger.focus();
   };
 
