@@ -379,3 +379,80 @@
 
 /* Keep the library start clear of the sticky header when jumped to. */
 #library { scroll-margin-top: 64px; }
+
+/* ---- Iconbar promo card ---- */
+.card-promo {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+  background: var(--card);
+  border: 1px solid color-mix(in srgb, var(--amber) 35%, var(--line));
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition:
+    border-color 0.3s ease,
+    transform 0.3s var(--glide),
+    box-shadow 0.3s ease;
+}
+.card-promo:hover,
+.card-promo:focus-visible {
+  border-color: var(--amber);
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.8);
+  outline: none;
+}
+.card-promo-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 190px;
+  padding: 26px;
+  background: radial-gradient(
+    120% 90% at 50% 0%,
+    color-mix(in srgb, var(--amber) 14%, var(--graphite-2)),
+    var(--card)
+  );
+  border-bottom: 1px solid var(--line);
+}
+.card-promo-icon {
+  width: 72px;
+  height: 72px;
+  color: var(--amber);
+  transition: transform 0.4s var(--spring);
+}
+.card-promo:hover .card-promo-icon {
+  transform: scale(1.08) rotate(-4deg);
+}
+.card-promo-foot {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px;
+}
+.card-promo-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+}
+.card-promo-desc {
+  margin-top: 3px;
+  font-size: 12.5px;
+  color: var(--bone-dim);
+  line-height: 1.45;
+}
+.card-promo-cta {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--graphite);
+  background: var(--amber);
+  padding: 6px 11px;
+  border-radius: 100px;
+}
+/* Hide the ad while the library search is filtering effects. */
+.gallery:has(> .card.search-hidden) > .card-promo {
+  display: none;
+}

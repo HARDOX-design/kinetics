@@ -640,3 +640,56 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 .code-modal-waitlist { flex: none; grid-template-columns: 1fr; gap: 12px; padding: 16px 18px; border-top: 1px solid color-mix(in srgb, var(--amber) 40%, var(--line)); background: radial-gradient(ellipse at top left, color-mix(in srgb, var(--amber) 12%, transparent), transparent 70%), var(--card); }
 .code-modal-waitlist .waitlist-inline-copy p { margin-top: 4px; font-size: 14px; }
 @media (max-width: 760px) { .waitlist-inline { grid-template-columns: 1fr; } .waitlist-form button { flex: 1 1 100%; } }
+
+/* ---- Iconbar promo (sidebar + header) ---- */
+.sidebar-nav a.sidebar-promo {
+  margin-bottom: 8px;
+  color: var(--bone);
+  background: color-mix(in srgb, var(--amber) 8%, transparent);
+  border-color: color-mix(in srgb, var(--amber) 30%, transparent);
+}
+.sidebar-promo .sidebar-icon {
+  color: var(--amber);
+  opacity: 1;
+}
+.sidebar-nav a.sidebar-promo:hover,
+.sidebar-nav a.sidebar-promo:focus-visible {
+  background: color-mix(in srgb, var(--amber) 14%, transparent);
+  border-color: color-mix(in srgb, var(--amber) 50%, transparent);
+}
+.sidebar-badge {
+  margin-left: auto;
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bone-faint);
+}
+@media (min-width: 861px) {
+  html.sidebar-collapsed .sidebar-badge {
+    display: none;
+  }
+}
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav-promo {
+  color: var(--amber);
+  border-color: color-mix(in srgb, var(--amber) 40%, transparent);
+}
+.nav-promo:hover {
+  color: var(--bone);
+  border-color: var(--amber);
+}
+.nav-promo-short {
+  display: none;
+}
+@media (max-width: 860px) {
+  .nav-promo-full {
+    display: none;
+  }
+  .nav-promo-short {
+    display: inline;
+  }
+}
