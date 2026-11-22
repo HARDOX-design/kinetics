@@ -1,0 +1,255 @@
+/* ============================================================
+   Kinetics — pipette.css
+   Pipette promo: sidebar, header, menu and gallery card
+   ============================================================ */
+
+.pipette-link,
+.pipette-card {
+  --pipette: #a78bff;
+}
+
+/* ---- Sidebar ---- */
+.sidebar-nav a.sidebar-promo:has(+ .sidebar-promo) {
+  margin-bottom: 2px;
+}
+.sidebar-nav a.sidebar-promo.pipette-link {
+  background: color-mix(in srgb, var(--pipette) 8%, transparent);
+  border-color: color-mix(in srgb, var(--pipette) 30%, transparent);
+}
+.sidebar-nav a.sidebar-promo.pipette-link:hover,
+.sidebar-nav a.sidebar-promo.pipette-link:focus-visible {
+  background: color-mix(in srgb, var(--pipette) 14%, transparent);
+  border-color: color-mix(in srgb, var(--pipette) 50%, transparent);
+}
+.sidebar-nav a.pipette-link .sidebar-icon {
+  color: var(--pipette);
+  transform-origin: 20% 80%;
+  animation: pipette-dip 5s var(--spring) infinite;
+}
+
+/* ---- Header and mobile menu ---- */
+.nav-links a.pipette-link {
+  color: var(--pipette);
+}
+.nav-promo.pipette-nav {
+  display: none;
+  color: var(--pipette);
+  border-color: color-mix(in srgb, var(--pipette) 40%, transparent);
+}
+.nav-promo.pipette-nav:hover {
+  color: var(--bone);
+  border-color: var(--pipette);
+}
+/* Narrower headers have no room for a second promo. */
+@media (min-width: 1200px) {
+  .nav-promo.pipette-nav {
+    display: inline-block;
+  }
+}
+
+/* ---- Gallery card ---- */
+.card-promo.pipette-card {
+  border-color: color-mix(in srgb, var(--pipette) 35%, var(--line));
+}
+.card-promo.pipette-card:hover,
+.card-promo.pipette-card:focus-visible {
+  border-color: var(--pipette);
+}
+@media (min-width: 941px) {
+  .card-promo.pipette-card {
+    grid-column: span 2;
+  }
+}
+.pipette-card .card-promo-stage {
+  flex: 1;
+  background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--pipette) 20%, var(--graphite-2)), var(--card));
+}
+.pipette-card .card-promo-cta {
+  background: var(--pipette);
+}
+
+/* A loupe springs between three swatches; each landing updates the picker and copies.
+   One loop is 7.5s, three picks of 2.5s. The base styles are the reduced-motion frame. */
+.pipette-mac {
+  width: 100%;
+  max-width: 500px;
+  display: grid;
+  gap: 8px;
+  container-type: inline-size;
+}
+.pipette-glyph {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 18px;
+  margin-right: 14px;
+  color: var(--pipette);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--pipette) 18%, transparent);
+  animation: pipette-press 2.5s var(--spring) infinite;
+}
+.pipette-glyph svg {
+  width: 13px;
+  height: 13px;
+}
+.pipette-screen {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 132px;
+  gap: 12px;
+  height: 112px;
+}
+.pipette-canvas {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.pipette-swatch {
+  background: var(--c);
+  border-radius: 9px;
+  animation: pipette-squish 7.5s var(--spring) infinite;
+  animation-delay: calc(var(--i) * 2.5s - 7.5s);
+}
+.pipette-track {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc((100% - 12px) / 3);
+  display: grid;
+  place-content: center;
+  animation: pipette-travel 7.5s infinite;
+}
+.pipette-loupe {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  border: 3px solid var(--bone);
+  border-radius: 50%;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.35) 1px, transparent 1px) 0 0 / 8px 8px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.35) 1px, transparent 1px) 0 0 / 8px 8px;
+  box-shadow: 0 8px 18px -4px rgba(0, 0, 0, 0.65);
+  animation: pipette-press 2.5s var(--spring) infinite;
+}
+.pipette-loupe::before,
+.pipette-loupe::after {
+  content: '';
+  position: absolute;
+}
+.pipette-loupe::before {
+  inset: 15px;
+  border: 2px solid var(--bone);
+}
+.pipette-loupe::after {
+  inset: -3px;
+  border: 2px solid var(--bone);
+  border-radius: 50%;
+  opacity: 0;
+  animation: pipette-ring 2.5s var(--glide) infinite;
+}
+.pipette-panel {
+  position: relative;
+  padding: 8px;
+  background: var(--graphite-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 10px;
+  box-shadow: 0 16px 30px -18px rgba(0, 0, 0, 0.9);
+}
+.pipette-shots {
+  display: grid;
+}
+.pipette-shot {
+  grid-area: 1 / 1;
+  display: grid;
+  gap: 5px;
+  opacity: 0;
+  animation: pipette-shot 7.5s infinite;
+  animation-delay: calc(var(--i) * 2.5s - 7.5s);
+}
+.pipette-shot:first-child {
+  opacity: 1;
+}
+.pipette-shot i {
+  height: 28px;
+  border-radius: 6px;
+  background: var(--c);
+}
+.pipette-shot > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  line-height: 14px;
+  white-space: nowrap;
+}
+.pipette-shot b {
+  color: var(--bone-dim);
+  font-weight: 400;
+}
+.pipette-copied {
+  position: absolute;
+  left: 50%;
+  bottom: 6px;
+  padding: 2px 9px;
+  color: var(--graphite);
+  background: var(--pipette);
+  border-radius: 100px;
+  transform: translateX(-50%);
+  animation: pipette-copied 2.5s var(--spring) infinite;
+}
+/* Phones: tighten the picker so the swatches stay visible. */
+@container (max-width: 300px) {
+  .pipette-screen {
+    grid-template-columns: minmax(0, 1fr) 84px;
+    gap: 8px;
+  }
+  .pipette-shot b {
+    display: none;
+  }
+  .pipette-loupe {
+    width: 34px;
+    height: 34px;
+  }
+  .pipette-loupe::before {
+    inset: 10px;
+  }
+}
+
+@keyframes pipette-travel {
+  0%, 22% { transform: none; animation-timing-function: var(--spring); }
+  33.333%, 55.333% { transform: translateX(calc(100% + 6px)); animation-timing-function: var(--spring); }
+  66.667%, 88.667% { transform: translateX(calc(200% + 12px)); animation-timing-function: var(--glide); }
+  100% { transform: none; }
+}
+@keyframes pipette-press {
+  0%, 22%, 100% { transform: none; }
+  8% { transform: scale(0.8); }
+}
+@keyframes pipette-ring {
+  0% { opacity: 0.9; transform: none; }
+  30%, 100% { opacity: 0; transform: scale(1.8); }
+}
+@keyframes pipette-squish {
+  0%, 9%, 100% { transform: none; }
+  3% { transform: scale(0.92); }
+}
+@keyframes pipette-shot {
+  0%, 33.32% { opacity: 1; }
+  33.34%, 100% { opacity: 0; }
+}
+@keyframes pipette-copied {
+  0%, 76%, 100% { opacity: 0; transform: translate(-50%, 6px); }
+  12%, 62% { opacity: 1; transform: translate(-50%, 0); }
+}
+@keyframes pipette-dip {
+  0%, 80%, 100% { transform: none; }
+  88% { transform: translate(-1px, 2px) rotate(-16deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pipette-link .sidebar-icon,
+  .pipette-mac *,
+  .pipette-mac *::before,
+  .pipette-mac *::after {
+    animation: none !important;
+  }
+}

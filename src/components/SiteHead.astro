@@ -92,6 +92,8 @@ const schema = {
 
     <!-- Critical CSS (render-blocking) -->
     <link rel="stylesheet" href={asset("/css/base.css")} />
+    {/* Kept out of base.css and gallery.css, which are copied into every downloadable example. */}
+    <link rel="stylesheet" href={asset("/css/pipette.css")} />
     {home && <link rel="stylesheet" href={asset("/css/hero.css")} />}
 
     {home && ["gallery", "effects-a", "effects-b", "effects-c", "closing"].map((name) => (
